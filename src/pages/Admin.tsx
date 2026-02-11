@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, LogOut, ArrowLeft } from "lucide-react";
+import { Pencil, Trash2, Plus, LogOut, ArrowLeft, Pin, PinOff } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 
 const STATUSES: EventStatus[] = ["upcoming", "live", "past"];
@@ -26,6 +26,8 @@ const emptyForm = {
   share_link: "",
   recap_summary: "",
   recording_link: "",
+  image_url: "",
+  is_pinned: false,
   rsvp_count: 0,
 };
 
@@ -74,6 +76,8 @@ const Admin = () => {
       share_link: event.share_link || "",
       recap_summary: event.recap_summary || "",
       recording_link: event.recording_link || "",
+      image_url: event.image_url || "",
+      is_pinned: event.is_pinned,
       rsvp_count: event.rsvp_count,
     });
     setShowForm(true);
@@ -90,6 +94,16 @@ const Admin = () => {
     }
   };
 
+  const handleTogglePin = async (event: DbEvent) => {
+    try {
+      await updateEvent(event.id, { is_pinned: !event.is_pinned });
+      toast.success(event.is_pinned ? "Event unpinned" : "Event pinned");
+      loadEvents();
+    } catch {
+      toast.error("Failed to update pin status");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -100,6 +114,7 @@ const Admin = () => {
         share_link: form.share_link || null,
         recap_summary: form.recap_summary || null,
         recording_link: form.recording_link || null,
+        image_url: form.image_url || null,
       };
 
       if (editingId) {
@@ -216,6 +231,10 @@ const Admin = () => {
                   <Label>RSVP Count</Label>
                   <Input type="number" value={form.rsvp_count} onChange={(e) => setForm({ ...form, rsvp_count: parseInt(e.target.value) || 0 })} />
                 </div>
+                <div className="space-y-2 sm:col-span-2">
+                  <Label>Image URL</Label>
+                  <Input value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="https://example.com/image.jpg" />
+                </div>
                 <div className="space-y-2">
                   <Label>Join Link</Label>
                   <Input value={form.join_link} onChange={(e) => setForm({ ...form, join_link: e.target.value })} />
@@ -227,6 +246,16 @@ const Admin = () => {
                 <div className="space-y-2">
                   <Label>Recording Link</Label>
                   <Input value={form.recording_link} onChange={(e) => setForm({ ...form, recording_link: e.target.value })} />
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id="is_pinned"
+                    checked={form.is_pinned}
+                    onChange={(e) => setForm({ ...form, is_pinned: e.target.checked })}
+                    className="h-4 w-4 rounded border-input accent-primary"
+                  />
+                  <Label htmlFor="is_pinned" className="cursor-pointer">Pin this event</Label>
                 </div>
                 <div className="space-y-2 sm:col-span-2">
                   <Label>Recap Summary</Label>
@@ -264,7 +293,12 @@ const Admin = () => {
               <TableBody>
                 {events.map((event) => (
                   <TableRow key={event.id}>
-                    <TableCell className="font-medium">{event.title}</TableCell>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        {event.is_pinned && <Pin className="h-3.5 w-3.5 text-primary" />}
+                        {event.title}
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <span className="rounded-md bg-secondary px-2 py-1 text-xs">{event.category}</span>
                     </TableCell>
@@ -275,6 +309,14 @@ const Admin = () => {
                     <TableCell className="text-sm text-muted-foreground">{event.host}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleTogglePin(event)}
+                          title={event.is_pinned ? "Unpin event" : "Pin event"}
+                        >
+                          {event.is_pinned ? <PinOff className="h-4 w-4 text-primary" /> : <Pin className="h-4 w-4" />}
+                        </Button>
                         <Button variant="ghost" size="icon" onClick={() => handleEdit(event)}>
                           <Pencil className="h-4 w-4" />
                         </Button>

@@ -16,6 +16,8 @@ export interface DbEvent {
   share_link: string | null;
   recap_summary: string | null;
   recording_link: string | null;
+  image_url: string | null;
+  is_pinned: boolean;
   rsvp_count: number;
   created_at: string;
   updated_at: string;

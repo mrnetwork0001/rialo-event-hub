@@ -1,7 +1,7 @@
 import type { DbEvent } from "@/lib/supabase-events";
 import StatusBadge from "./StatusBadge";
 import CountdownTimer from "./CountdownTimer";
-import { Calendar, MapPin, Users, ExternalLink, Play, Share2, X } from "lucide-react";
+import { Calendar, MapPin, Users, ExternalLink, Play, Share2, X, Pin } from "lucide-react";
 import { format } from "date-fns";
 
 interface EventDetailModalProps {
@@ -26,11 +26,23 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
           <X className="h-5 w-5" />
         </button>
 
+        {/* Event Image */}
+        {event.image_url && (
+          <div className="mb-4 -mx-6 -mt-6 rounded-t-2xl overflow-hidden h-48">
+            <img src={event.image_url} alt={event.title} className="h-full w-full object-cover" />
+          </div>
+        )}
+
         <div className="mb-4 flex items-center gap-3">
           <span className="rounded-md bg-secondary px-2.5 py-1 text-xs font-medium text-muted-foreground">
             {event.category}
           </span>
           <StatusBadge status={event.status} />
+          {event.is_pinned && (
+            <span className="flex items-center gap-1 rounded-full bg-primary/20 px-2 py-0.5 text-xs font-medium text-primary">
+              <Pin className="h-3 w-3" /> Pinned
+            </span>
+          )}
         </div>
 
         <h2 className="mb-2 font-display text-2xl font-bold text-foreground">{event.title}</h2>
