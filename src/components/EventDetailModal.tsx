@@ -1,11 +1,11 @@
-import type { RialoEvent } from "@/lib/events-data";
+import type { DbEvent } from "@/lib/supabase-events";
 import StatusBadge from "./StatusBadge";
 import CountdownTimer from "./CountdownTimer";
 import { Calendar, MapPin, Users, ExternalLink, Play, Share2, X } from "lucide-react";
 import { format } from "date-fns";
 
 interface EventDetailModalProps {
-  event: RialoEvent | null;
+  event: DbEvent | null;
   onClose: () => void;
 }
 
@@ -38,7 +38,7 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
         <div className="mb-4 space-y-2">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4 text-primary/70" />
-            <span>{format(new Date(event.date), "EEEE, MMMM d, yyyy 'at' h:mm a 'UTC'")}</span>
+            <span>{format(new Date(event.event_date), "EEEE, MMMM d, yyyy 'at' h:mm a 'UTC'")}</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4 text-primary/70" />
@@ -46,7 +46,7 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Users className="h-4 w-4 text-primary/70" />
-            <span>{event.rsvpCount} RSVPs · Hosted by {event.host}</span>
+            <span>{event.rsvp_count} RSVPs · Hosted by {event.host}</span>
           </div>
         </div>
 
@@ -55,45 +55,45 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
         {event.status === "upcoming" && (
           <div className="mb-5 rounded-lg border border-border bg-secondary/50 p-4">
             <span className="mb-2 block text-xs text-muted-foreground uppercase tracking-wider">Countdown</span>
-            <CountdownTimer targetDate={event.date} />
+            <CountdownTimer targetDate={event.event_date} />
           </div>
         )}
 
-        {event.recapSummary && (
+        {event.recap_summary && (
           <div className="mb-5 rounded-lg border border-border bg-secondary/50 p-4">
             <span className="mb-2 block text-xs text-primary uppercase tracking-wider font-semibold">Recap</span>
-            <p className="text-sm text-secondary-foreground leading-relaxed">{event.recapSummary}</p>
+            <p className="text-sm text-secondary-foreground leading-relaxed">{event.recap_summary}</p>
           </div>
         )}
 
         <div className="flex gap-3">
-          {event.status === "live" && event.joinLink && (
+          {event.status === "live" && event.join_link && (
             <a
-              href={event.joinLink}
+              href={event.join_link}
               className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-live text-live-foreground py-3 text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               <ExternalLink className="h-4 w-4" /> Join Live
             </a>
           )}
-          {event.status === "upcoming" && event.joinLink && (
+          {event.status === "upcoming" && event.join_link && (
             <a
-              href={event.joinLink}
+              href={event.join_link}
               className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground py-3 text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               <ExternalLink className="h-4 w-4" /> RSVP / Join
             </a>
           )}
-          {event.status === "past" && event.recordingLink && (
+          {event.status === "past" && event.recording_link && (
             <a
-              href={event.recordingLink}
+              href={event.recording_link}
               className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground py-3 text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               <Play className="h-4 w-4" /> Watch Recording
             </a>
           )}
-          {event.shareLink && (
+          {event.share_link && (
             <a
-              href={event.shareLink}
+              href={event.share_link}
               className="flex items-center justify-center gap-2 rounded-lg border border-border bg-secondary px-4 py-3 text-sm font-medium text-foreground hover:border-primary/30 transition-colors"
             >
               <Share2 className="h-4 w-4" />
