@@ -22,6 +22,8 @@ export type Database = {
           event_date: string
           host: string
           id: string
+          image_url: string | null
+          is_pinned: boolean
           join_link: string | null
           platform: string
           recap_summary: string | null
@@ -39,6 +41,8 @@ export type Database = {
           event_date: string
           host?: string
           id?: string
+          image_url?: string | null
+          is_pinned?: boolean
           join_link?: string | null
           platform?: string
           recap_summary?: string | null
@@ -56,6 +60,8 @@ export type Database = {
           event_date?: string
           host?: string
           id?: string
+          image_url?: string | null
+          is_pinned?: boolean
           join_link?: string | null
           platform?: string
           recap_summary?: string | null
