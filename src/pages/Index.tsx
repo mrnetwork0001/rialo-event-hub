@@ -9,9 +9,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
 
+const STATUS_ORDER: EventStatus[] = ["live", "upcoming", "past"];
+
 const Index = () => {
   const [category, setCategory] = useState<EventCategory | "All">("All");
   const [selectedEvent, setSelectedEvent] = useState<DbEvent | null>(null);
+  const [statusFilter, setStatusFilter] = useState<EventStatus | "all">("all");
   const [events, setEvents] = useState<DbEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const { isAdmin } = useAuth();
@@ -27,28 +30,31 @@ const Index = () => {
   const filtered = useMemo(() => {
     let list = [...events];
     if (category !== "All") list = list.filter((e) => e.category === category);
+    if (statusFilter !== "all") list = list.filter((e) => e.status === statusFilter);
+    // Pinned first, then by status order
+    list.sort((a, b) => {
+      if (a.is_pinned !== b.is_pinned) return a.is_pinned ? -1 : 1;
+      return STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status);
+    });
     return list;
+  }, [events, category, statusFilter]);
+
+  const counts = useMemo(() => {
+    const base = category === "All" ? events : events.filter((e) => e.category === category);
+    return {
+      all: base.length,
+      live: base.filter((e) => e.status === "live").length,
+      upcoming: base.filter((e) => e.status === "upcoming").length,
+      past: base.filter((e) => e.status === "past").length,
+    };
   }, [events, category]);
 
-  const upcomingEvents = useMemo(() => {
-    const list = filtered.filter((e) => e.status === "upcoming" || e.status === "live");
-    // Pinned first, then by date ascending (soonest first)
-    list.sort((a, b) => {
-      if (a.is_pinned !== b.is_pinned) return a.is_pinned ? -1 : 1;
-      return new Date(a.event_date).getTime() - new Date(b.event_date).getTime();
-    });
-    return list;
-  }, [filtered]);
-
-  const pastEvents = useMemo(() => {
-    const list = filtered.filter((e) => e.status === "past");
-    // Pinned first, then by date descending (most recent first)
-    list.sort((a, b) => {
-      if (a.is_pinned !== b.is_pinned) return a.is_pinned ? -1 : 1;
-      return new Date(b.event_date).getTime() - new Date(a.event_date).getTime();
-    });
-    return list;
-  }, [filtered]);
+  const statusTabs: { key: EventStatus | "all"; label: string }[] = [
+    { key: "all", label: `All (${counts.all})` },
+    { key: "live", label: `Live (${counts.live})` },
+    { key: "upcoming", label: `Upcoming (${counts.upcoming})` },
+    { key: "past", label: `Past (${counts.past})` },
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -64,56 +70,41 @@ const Index = () => {
           </div>
         )}
 
-        <div className="mb-8">
+        <div className="mb-6">
           <CategoryFilter selected={category} onSelect={setCategory} />
+        </div>
+
+        <div className="mb-8 flex gap-1 rounded-lg border border-border bg-secondary/30 p-1">
+          {statusTabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setStatusFilter(tab.key)}
+              className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition-all ${
+                statusFilter === tab.key
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {loading ? (
           <div className="flex justify-center py-20">
             <p className="text-muted-foreground">Loading events...</p>
           </div>
+        ) : filtered.length > 0 ? (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {filtered.map((event) => (
+              <EventCard key={event.id} event={event} onSelect={setSelectedEvent} />
+            ))}
+          </div>
         ) : (
-          <>
-            {/* Upcoming & Live Events */}
-            <section className="mb-12">
-              <h2 className="mb-6 font-display text-2xl font-bold text-foreground flex items-center gap-2">
-                <span className="inline-block h-2 w-2 rounded-full bg-upcoming" />
-                Upcoming Events
-                <span className="text-sm font-normal text-muted-foreground ml-2">({upcomingEvents.length})</span>
-              </h2>
-              {upcomingEvents.length > 0 ? (
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {upcomingEvents.map((event) => (
-                    <EventCard key={event.id} event={event} onSelect={setSelectedEvent} />
-                  ))}
-                </div>
-              ) : (
-                <div className="rounded-xl border border-border bg-card/50 py-12 text-center">
-                  <p className="text-muted-foreground">No upcoming events</p>
-                </div>
-              )}
-            </section>
-
-            {/* Past Events */}
-            <section>
-              <h2 className="mb-6 font-display text-2xl font-bold text-foreground flex items-center gap-2">
-                <span className="inline-block h-2 w-2 rounded-full bg-past" />
-                Past Events
-                <span className="text-sm font-normal text-muted-foreground ml-2">({pastEvents.length})</span>
-              </h2>
-              {pastEvents.length > 0 ? (
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {pastEvents.map((event) => (
-                    <EventCard key={event.id} event={event} onSelect={setSelectedEvent} />
-                  ))}
-                </div>
-              ) : (
-                <div className="rounded-xl border border-border bg-card/50 py-12 text-center">
-                  <p className="text-muted-foreground">No past events yet</p>
-                </div>
-              )}
-            </section>
-          </>
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <p className="text-lg font-medium text-muted-foreground">No events found</p>
+            <p className="text-sm text-muted-foreground/70">Try adjusting your filters</p>
+          </div>
         )}
       </main>
 
