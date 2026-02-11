@@ -1,12 +1,12 @@
-import type { RialoEvent } from "@/lib/events-data";
+import type { DbEvent } from "@/lib/supabase-events";
 import StatusBadge from "./StatusBadge";
 import CountdownTimer from "./CountdownTimer";
 import { Calendar, MapPin, Users, ExternalLink, Play } from "lucide-react";
 import { format } from "date-fns";
 
 interface EventCardProps {
-  event: RialoEvent;
-  onSelect: (event: RialoEvent) => void;
+  event: DbEvent;
+  onSelect: (event: DbEvent) => void;
 }
 
 const EventCard = ({ event, onSelect }: EventCardProps) => {
@@ -33,7 +33,7 @@ const EventCard = ({ event, onSelect }: EventCardProps) => {
       <div className="mb-4 space-y-2">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Calendar className="h-3.5 w-3.5 text-primary/70" />
-          <span>{format(new Date(event.date), "MMM d, yyyy · h:mm a 'UTC'")}</span>
+          <span>{format(new Date(event.event_date), "MMM d, yyyy · h:mm a 'UTC'")}</span>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <MapPin className="h-3.5 w-3.5 text-primary/70" />
@@ -41,20 +41,20 @@ const EventCard = ({ event, onSelect }: EventCardProps) => {
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Users className="h-3.5 w-3.5 text-primary/70" />
-          <span>{event.rsvpCount} RSVPs · Hosted by {event.host}</span>
+          <span>{event.rsvp_count} RSVPs · Hosted by {event.host}</span>
         </div>
       </div>
 
       {event.status === "upcoming" && (
         <div className="flex items-center justify-between border-t border-border pt-4">
           <span className="text-xs text-muted-foreground uppercase tracking-wider">Starts in</span>
-          <CountdownTimer targetDate={event.date} />
+          <CountdownTimer targetDate={event.event_date} />
         </div>
       )}
 
-      {event.status === "live" && event.joinLink && (
+      {event.status === "live" && event.join_link && (
         <a
-          href={event.joinLink}
+          href={event.join_link}
           onClick={(e) => e.stopPropagation()}
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-live/20 border border-live/40 py-2.5 text-sm font-semibold text-live hover:bg-live/30 transition-colors"
         >
@@ -62,9 +62,9 @@ const EventCard = ({ event, onSelect }: EventCardProps) => {
         </a>
       )}
 
-      {event.status === "past" && event.recordingLink && (
+      {event.status === "past" && event.recording_link && (
         <a
-          href={event.recordingLink}
+          href={event.recording_link}
           onClick={(e) => e.stopPropagation()}
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-secondary border border-border py-2.5 text-sm font-medium text-foreground hover:border-primary/30 transition-colors"
         >
