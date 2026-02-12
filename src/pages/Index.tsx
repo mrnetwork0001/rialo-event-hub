@@ -7,14 +7,16 @@ import EventDetailModal from "@/components/EventDetailModal";
 import { fetchEvents, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
+import { Settings, ChevronLeft, ChevronRight } from "lucide-react";
 
 const STATUS_ORDER: EventStatus[] = ["live", "upcoming", "past"];
+const EVENTS_PER_PAGE = 12;
 
 const Index = () => {
   const [category, setCategory] = useState<EventCategory | "All">("All");
   const [selectedEvent, setSelectedEvent] = useState<DbEvent | null>(null);
   const [statusFilter, setStatusFilter] = useState<EventStatus | "all">("all");
+  const [currentPage, setCurrentPage] = useState(1);
   const [events, setEvents] = useState<DbEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const { isAdmin } = useAuth();
@@ -38,6 +40,17 @@ const Index = () => {
     });
     return list;
   }, [events, category, statusFilter]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [category, statusFilter]);
+
+  const totalPages = Math.ceil(filtered.length / EVENTS_PER_PAGE);
+  const paginatedEvents = filtered.slice(
+    (currentPage - 1) * EVENTS_PER_PAGE,
+    currentPage * EVENTS_PER_PAGE
+  );
 
   const counts = useMemo(() => {
     const base = category === "All" ? events : events.filter((e) => e.category === category);
@@ -98,12 +111,46 @@ const Index = () => {
           <div className="flex justify-center py-20">
             <p className="text-muted-foreground">Loading events...</p>
           </div>
-        ) : filtered.length > 0 ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((event) => (
-              <EventCard key={event.id} event={event} onSelect={setSelectedEvent} />
-            ))}
-          </div>
+        ) : paginatedEvents.length > 0 ? (
+          <>
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {paginatedEvents.map((event) => (
+                <EventCard key={event.id} event={event} onSelect={setSelectedEvent} />
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="mt-8 flex items-center justify-center gap-2">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium transition-colors ${
+                      currentPage === page
+                        ? "bg-primary text-primary-foreground"
+                        : "border border-border text-muted-foreground hover:bg-secondary"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <p className="text-lg font-medium text-muted-foreground">No events found</p>
