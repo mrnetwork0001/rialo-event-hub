@@ -70,25 +70,29 @@ const Index = () => {
           </div>
         )}
 
-        <div className="mb-6">
-          <CategoryFilter selected={category} onSelect={setCategory} />
+        <div className="sticky top-0 z-30 -mx-6 px-6 py-4 bg-background/95 backdrop-blur-sm border-b border-border/50">
+          <div className="mb-4">
+            <CategoryFilter selected={category} onSelect={setCategory} />
+          </div>
+
+          <div className="flex gap-1 rounded-lg border border-border bg-secondary/30 p-1">
+            {statusTabs.map((tab) => (
+              <button
+                key={tab.key}
+                onClick={() => setStatusFilter(tab.key)}
+                className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition-all ${
+                  statusFilter === tab.key
+                    ? "bg-card text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="mb-8 flex gap-1 rounded-lg border border-border bg-secondary/30 p-1">
-          {statusTabs.map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setStatusFilter(tab.key)}
-              className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition-all ${
-                statusFilter === tab.key
-                  ? "bg-card text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        <div className="mt-6" />
 
         {loading ? (
           <div className="flex justify-center py-20">
