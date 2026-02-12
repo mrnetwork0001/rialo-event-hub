@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { fetchEvents, createEvent, updateEvent, deleteEvent, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
+import { uploadEventImage } from "@/lib/upload-image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,6 +40,9 @@ const Admin = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -104,17 +108,32 @@ const Admin = () => {
     }
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setUploading(true);
+      let imageUrl = form.image_url;
+
+      if (imageFile) {
+        imageUrl = await uploadEventImage(imageFile);
+      }
+
       const payload = {
         ...form,
+        image_url: imageUrl || null,
         event_date: new Date(form.event_date).toISOString(),
         join_link: form.join_link || null,
         share_link: form.share_link || null,
         recap_summary: form.recap_summary || null,
         recording_link: form.recording_link || null,
-        image_url: form.image_url || null,
       };
 
       if (editingId) {
@@ -127,9 +146,13 @@ const Admin = () => {
       setShowForm(false);
       setEditingId(null);
       setForm(emptyForm);
+      setImageFile(null);
+      setImagePreview(null);
       loadEvents();
     } catch (err: any) {
       toast.error(err.message || "Failed to save event");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -172,7 +195,7 @@ const Admin = () => {
         {/* Actions */}
         <div className="mb-6 flex items-center justify-between">
           <h2 className="font-display text-lg font-semibold text-foreground">Events ({events.length})</h2>
-          <Button onClick={() => { setShowForm(true); setEditingId(null); setForm(emptyForm); }}>
+          <Button onClick={() => { setShowForm(true); setEditingId(null); setForm(emptyForm); setImageFile(null); setImagePreview(null); }}>
             <Plus className="h-4 w-4 mr-2" /> New Event
           </Button>
         </div>
@@ -232,8 +255,17 @@ const Admin = () => {
                   <Input type="number" value={form.rsvp_count} onChange={(e) => setForm({ ...form, rsvp_count: parseInt(e.target.value) || 0 })} />
                 </div>
                 <div className="space-y-2 sm:col-span-2">
-                  <Label>Image URL</Label>
-                  <Input value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="https://example.com/image.jpg" />
+                  <Label>Event Image</Label>
+                  <Input type="file" accept="image/*" onChange={handleImageChange} />
+                  {(imagePreview || form.image_url) && (
+                    <div className="mt-2">
+                      <img
+                        src={imagePreview || form.image_url}
+                        alt="Preview"
+                        className="h-32 w-auto rounded-md object-cover"
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label>Join Link</Label>
@@ -262,10 +294,10 @@ const Admin = () => {
                   <Textarea value={form.recap_summary} onChange={(e) => setForm({ ...form, recap_summary: e.target.value })} />
                 </div>
                 <div className="sm:col-span-2 flex gap-3">
-                  <Button type="submit">
-                    {editingId ? "Update Event" : "Create Event"}
+                  <Button type="submit" disabled={uploading}>
+                    {uploading ? "Uploading..." : editingId ? "Update Event" : "Create Event"}
                   </Button>
-                  <Button type="button" variant="outline" onClick={() => { setShowForm(false); setEditingId(null); setForm(emptyForm); }}>
+                  <Button type="button" variant="outline" onClick={() => { setShowForm(false); setEditingId(null); setForm(emptyForm); setImageFile(null); setImagePreview(null); }}>
                     Cancel
                   </Button>
                 </div>
