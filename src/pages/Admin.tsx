@@ -250,10 +250,6 @@ const Admin = () => {
                   <Label>Platform</Label>
                   <Input value={form.platform} onChange={(e) => setForm({ ...form, platform: e.target.value })} required />
                 </div>
-                <div className="space-y-2">
-                  <Label>RSVP Count</Label>
-                  <Input type="number" value={form.rsvp_count} onChange={(e) => setForm({ ...form, rsvp_count: parseInt(e.target.value) || 0 })} />
-                </div>
                 <div className="space-y-2 sm:col-span-2">
                   <Label>Event Image</Label>
                   <Input type="file" accept="image/*" onChange={handleImageChange} />
@@ -276,7 +272,7 @@ const Admin = () => {
                   <Input value={form.share_link} onChange={(e) => setForm({ ...form, share_link: e.target.value })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Recording Link</Label>
+                  <Label>Recap Link</Label>
                   <Input value={form.recording_link} onChange={(e) => setForm({ ...form, recording_link: e.target.value })} />
                 </div>
                 <div className="flex items-center gap-2">

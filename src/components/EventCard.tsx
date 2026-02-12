@@ -66,7 +66,7 @@ const EventCard = ({ event, onSelect }: EventCardProps) => {
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Users className="h-3.5 w-3.5 text-primary/70" />
-            <span>{event.rsvp_count} RSVPs · Hosted by {event.host}</span>
+            <span>Hosted by {event.host}</span>
           </div>
         </div>
 
@@ -93,7 +93,7 @@ const EventCard = ({ event, onSelect }: EventCardProps) => {
             onClick={(e) => e.stopPropagation()}
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-secondary border border-border py-2.5 text-sm font-medium text-foreground hover:border-primary/30 transition-colors"
           >
-            <Play className="h-4 w-4" /> Watch Recording
+            <Play className="h-4 w-4" /> View Recap
           </a>
         )}
       </div>
