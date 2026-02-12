@@ -58,7 +58,7 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Users className="h-4 w-4 text-primary/70" />
-            <span>{event.rsvp_count} RSVPs · Hosted by {event.host}</span>
+            <span>Hosted by {event.host}</span>
           </div>
         </div>
 
@@ -100,7 +100,7 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
               href={event.recording_link}
               className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground py-3 text-sm font-semibold hover:opacity-90 transition-opacity"
             >
-              <Play className="h-4 w-4" /> Watch Recording
+              <Play className="h-4 w-4" /> View Recap
             </a>
           )}
           {event.share_link && (

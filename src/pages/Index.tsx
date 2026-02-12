@@ -116,6 +116,12 @@ const Index = () => {
         <p className="text-sm text-muted-foreground">
           Rialo Community Event Hub · No more scattered links. No more missed events.
         </p>
+        <p className="text-sm text-muted-foreground mt-1">
+          Built by{" "}
+          <a href="https://x.com/encrypt_wizard" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            MrNetwork
+          </a>
+        </p>
       </footer>
 
       <EventDetailModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
