@@ -2,7 +2,6 @@ import type { DbEvent } from "@/lib/supabase-events";
 import StatusBadge from "./StatusBadge";
 import CountdownTimer from "./CountdownTimer";
 import { Calendar, MapPin, Users, ExternalLink, Play, Share2, X, Pin } from "lucide-react";
-import { format } from "date-fns";
 
 interface EventDetailModalProps {
   event: DbEvent | null;
@@ -50,7 +49,7 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
         <div className="mb-4 space-y-2">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4 text-primary/70" />
-            <span>{format(new Date(event.event_date), "EEEE, MMMM d, yyyy 'at' h:mm a 'UTC'")}</span>
+            <span>{new Date(event.event_date).toLocaleString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" })}</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4 text-primary/70" />
