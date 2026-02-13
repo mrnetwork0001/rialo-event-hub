@@ -53,6 +53,27 @@ export async function deleteEvent(id: string) {
   if (error) throw error;
 }
 
+export async function autoUpdateEventStatus(): Promise<void> {
+  await supabase.rpc("auto_update_event_status");
+}
+
+export async function getSiteSetting(key: string): Promise<string> {
+  const { data } = await supabase
+    .from("site_settings")
+    .select("value")
+    .eq("key", key)
+    .single();
+  return data?.value ?? "";
+}
+
+export async function updateSiteSetting(key: string, value: string): Promise<void> {
+  const { error } = await supabase
+    .from("site_settings")
+    .update({ value })
+    .eq("key", key);
+  if (error) throw error;
+}
+
 export async function checkIsAdmin(): Promise<boolean> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return false;

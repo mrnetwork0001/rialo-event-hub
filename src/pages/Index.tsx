@@ -4,10 +4,10 @@ import HeroSection from "@/components/HeroSection";
 import CategoryFilter from "@/components/CategoryFilter";
 import EventCard from "@/components/EventCard";
 import EventDetailModal from "@/components/EventDetailModal";
-import { fetchEvents, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
+import { fetchEvents, autoUpdateEventStatus, getSiteSetting, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Settings, ChevronLeft, ChevronRight } from "lucide-react";
+import { Settings, ChevronLeft, ChevronRight, Send } from "lucide-react";
 
 const STATUS_ORDER: EventStatus[] = ["live", "upcoming", "past"];
 const EVENTS_PER_PAGE = 12;
@@ -19,14 +19,20 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [events, setEvents] = useState<DbEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [submitEventUrl, setSubmitEventUrl] = useState<string>("");
   const { isAdmin } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchEvents()
-      .then(setEvents)
+    // Auto-update event statuses then fetch
+    autoUpdateEventStatus()
+      .catch(() => {})
+      .then(() => fetchEvents())
+      .then((data) => data && setEvents(data))
       .catch(() => {})
       .finally(() => setLoading(false));
+    
+    getSiteSetting("submit_event_url").then(setSubmitEventUrl).catch(() => {});
   }, []);
 
   const filtered = useMemo(() => {
@@ -75,13 +81,20 @@ const Index = () => {
 
       <main className="mx-auto max-w-6xl px-6 pb-20">
         {/* Admin link */}
-        {isAdmin && (
-          <div className="mb-4 flex justify-end">
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            {submitEventUrl && (
+              <Button size="sm" onClick={() => window.open(submitEventUrl, "_blank")}>
+                <Send className="h-4 w-4 mr-2" /> Submit Your Event
+              </Button>
+            )}
+          </div>
+          {isAdmin && (
             <Button variant="outline" size="sm" onClick={() => navigate("/admin")}>
               <Settings className="h-4 w-4 mr-2" /> Admin Panel
             </Button>
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="sticky top-0 z-30 -mx-6 px-6 py-4 bg-background/95 backdrop-blur-sm border-b border-border/50">
           <div className="mb-4">
