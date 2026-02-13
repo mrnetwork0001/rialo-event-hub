@@ -15,6 +15,13 @@ import StatusBadge from "@/components/StatusBadge";
 
 const STATUSES: EventStatus[] = ["upcoming", "live", "past"];
 
+/** Convert a UTC ISO string to a local "YYYY-MM-DDTHH:mm" value for datetime-local inputs */
+function toLocalDatetimeString(utcIso: string): string {
+  const d = new Date(utcIso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 const emptyForm = {
   title: "",
   description: "",
@@ -78,7 +85,7 @@ const Admin = () => {
       description: event.description,
       category: event.category,
       status: event.status,
-      event_date: event.event_date.slice(0, 16),
+      event_date: toLocalDatetimeString(event.event_date),
       host: event.host,
       platform: event.platform,
       join_link: event.join_link || "",
@@ -280,7 +287,7 @@ const Admin = () => {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Date & Time</Label>
+                  <Label>Date & Time (your local time — stored as UTC)</Label>
                   <Input type="datetime-local" value={form.event_date} onChange={(e) => setForm({ ...form, event_date: e.target.value })} required />
                 </div>
                 <div className="space-y-2">

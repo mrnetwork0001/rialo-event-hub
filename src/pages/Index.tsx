@@ -42,7 +42,13 @@ const Index = () => {
     // Pinned first, then by status order
     list.sort((a, b) => {
       if (a.is_pinned !== b.is_pinned) return a.is_pinned ? -1 : 1;
-      return STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status);
+      const statusDiff = STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status);
+      if (statusDiff !== 0) return statusDiff;
+      // Within same status: upcoming/live ascending (soonest first), past descending (most recent first)
+      if (a.status === "past") {
+        return new Date(b.event_date).getTime() - new Date(a.event_date).getTime();
+      }
+      return new Date(a.event_date).getTime() - new Date(b.event_date).getTime();
     });
     return list;
   }, [events, category, statusFilter]);
