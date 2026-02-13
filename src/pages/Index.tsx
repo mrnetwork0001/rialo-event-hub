@@ -7,7 +7,7 @@ import EventDetailModal from "@/components/EventDetailModal";
 import { fetchEvents, autoUpdateEventStatus, getSiteSetting, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Settings, ChevronLeft, ChevronRight, Send } from "lucide-react";
+import { ChevronLeft, ChevronRight, Send } from "lucide-react";
 
 const STATUS_ORDER: EventStatus[] = ["live", "upcoming", "past"];
 const EVENTS_PER_PAGE = 12;
@@ -86,18 +86,11 @@ const Index = () => {
       <HeroSection />
 
       <main className="mx-auto max-w-6xl px-6 pb-20">
-        {/* Admin link */}
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            {submitEventUrl && (
-              <Button size="sm" onClick={() => window.open(submitEventUrl, "_blank")}>
-                <Send className="h-4 w-4 mr-2" /> Submit Your Event
-              </Button>
-            )}
-          </div>
-          {isAdmin && (
-            <Button variant="outline" size="sm" onClick={() => navigate("/admin")}>
-              <Settings className="h-4 w-4 mr-2" /> Admin Panel
+        {/* Submit Event button */}
+        <div className="mb-4">
+          {submitEventUrl && (
+            <Button size="sm" onClick={() => window.open(submitEventUrl, "_blank")}>
+              <Send className="h-4 w-4 mr-2" /> Submit Your Event
             </Button>
           )}
         </div>
