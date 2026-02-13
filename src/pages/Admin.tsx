@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { fetchEvents, createEvent, updateEvent, deleteEvent, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
+import { fetchEvents, createEvent, updateEvent, deleteEvent, getSiteSetting, updateSiteSetting, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
 import { uploadEventImage } from "@/lib/upload-image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,6 +43,8 @@ const Admin = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [submitEventUrl, setSubmitEventUrl] = useState("");
+  const [savingUrl, setSavingUrl] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -51,7 +53,10 @@ const Admin = () => {
   }, [authLoading, user, navigate]);
 
   useEffect(() => {
-    if (user) loadEvents();
+    if (user) {
+      loadEvents();
+      getSiteSetting("submit_event_url").then(setSubmitEventUrl).catch(() => {});
+    }
   }, [user]);
 
   const loadEvents = async () => {
@@ -192,6 +197,42 @@ const Admin = () => {
       </header>
 
       <main className="mx-auto max-w-6xl px-6 py-8">
+        {/* Submit Event URL Setting */}
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="flex items-end gap-3">
+              <div className="flex-1 space-y-2">
+                <Label>Submit Event Form URL</Label>
+                <Input
+                  placeholder="https://forms.google.com/..."
+                  value={submitEventUrl}
+                  onChange={(e) => setSubmitEventUrl(e.target.value)}
+                />
+              </div>
+              <Button
+                variant="outline"
+                disabled={savingUrl}
+                onClick={async () => {
+                  setSavingUrl(true);
+                  try {
+                    await updateSiteSetting("submit_event_url", submitEventUrl);
+                    toast.success("Submit event URL saved");
+                  } catch {
+                    toast.error("Failed to save URL");
+                  } finally {
+                    setSavingUrl(false);
+                  }
+                }}
+              >
+                {savingUrl ? "Saving..." : "Save"}
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-2">
+              This link appears as a "Submit Your Event" button on the homepage. Leave empty to hide it.
+            </p>
+          </CardContent>
+        </Card>
+
         {/* Actions */}
         <div className="mb-6 flex items-center justify-between">
           <h2 className="font-display text-lg font-semibold text-foreground">Events ({events.length})</h2>
