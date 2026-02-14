@@ -1,7 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HeroSection from "@/components/HeroSection";
-import ThemeToggle from "@/components/ThemeToggle";
 import CategoryFilter from "@/components/CategoryFilter";
 import EventCard from "@/components/EventCard";
 import EventDetailModal from "@/components/EventDetailModal";
@@ -84,7 +83,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <ThemeToggle />
       <HeroSection />
 
       <main className="mx-auto max-w-6xl px-6 pb-20">
