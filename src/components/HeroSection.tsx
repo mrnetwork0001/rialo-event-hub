@@ -15,7 +15,7 @@ const HeroSection = () => {
         </div>
 
         <h1 className="mb-4 font-display text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-          <span className="text-foreground">Community </span>
+          <span className="text-foreground">Rialo Community </span>
           <span className="text-gradient-gold">Event Hub</span>
         </h1>
 
