@@ -8,7 +8,6 @@ import { fetchEvents, autoUpdateEventStatus, getSiteSetting, CATEGORIES, type Db
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
-import ChatWidget from "@/components/ChatWidget";
 
 const STATUS_ORDER: EventStatus[] = ["live", "upcoming", "past"];
 const EVENTS_PER_PAGE = 12;
@@ -185,7 +184,6 @@ const Index = () => {
       </footer>
 
       <EventDetailModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
-      <ChatWidget />
     </div>
   );
 };
