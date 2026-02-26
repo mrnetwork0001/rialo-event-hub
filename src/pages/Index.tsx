@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import CategoryFilter from "@/components/CategoryFilter";
 import EventCard from "@/components/EventCard";
 import EventDetailModal from "@/components/EventDetailModal";
+import FeaturedEvent from "@/components/FeaturedEvent";
 import { fetchEvents, autoUpdateEventStatus, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,10 @@ const Index = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const featuredEvent = useMemo(() => {
+    return events.find((e) => e.is_pinned && (e.status === "live" || e.status === "upcoming"));
+  }, [events]);
+
   const filtered = useMemo(() => {
     let list = [...events];
     if (category !== "All") list = list.filter((e) => e.category === category);
@@ -41,7 +46,6 @@ const Index = () => {
       if (a.is_pinned !== b.is_pinned) return a.is_pinned ? -1 : 1;
       const statusDiff = STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status);
       if (statusDiff !== 0) return statusDiff;
-      // Within same status: upcoming/live ascending (soonest first), past descending (most recent first)
       if (a.status === "past") {
         return new Date(b.event_date).getTime() - new Date(a.event_date).getTime();
       }
@@ -113,6 +117,10 @@ const Index = () => {
         </div>
 
         <div className="mt-6" />
+
+        {featuredEvent && statusFilter === "all" && category === "All" && (
+          <FeaturedEvent event={featuredEvent} onSelect={setSelectedEvent} />
+        )}
 
         {loading ? (
           <div className="flex justify-center py-20">
