@@ -4,7 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import CategoryFilter from "@/components/CategoryFilter";
 import EventCard from "@/components/EventCard";
 import EventDetailModal from "@/components/EventDetailModal";
-import { fetchEvents, autoUpdateEventStatus, getSiteSetting, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
+import { fetchEvents, autoUpdateEventStatus, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
@@ -19,7 +19,6 @@ const Index = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [events, setEvents] = useState<DbEvent[]>([]);
   const [loading, setLoading] = useState(true);
-  const [submitEventUrl, setSubmitEventUrl] = useState<string>("");
   const { isAdmin } = useAuth();
   const navigate = useNavigate();
 
@@ -31,8 +30,6 @@ const Index = () => {
       .then((data) => data && setEvents(data))
       .catch(() => {})
       .finally(() => setLoading(false));
-    
-    getSiteSetting("submit_event_url").then(setSubmitEventUrl).catch(() => {});
   }, []);
 
   const filtered = useMemo(() => {
@@ -88,11 +85,9 @@ const Index = () => {
       <main className="mx-auto max-w-6xl px-6 pb-20">
         {/* Submit Event button */}
         <div className="mb-4">
-          {submitEventUrl && (
-            <Button size="sm" onClick={() => window.open(submitEventUrl, "_blank")}>
-              <Send className="h-4 w-4 mr-2" /> Submit Your Event
-            </Button>
-          )}
+          <Button size="sm" onClick={() => navigate("/submit-event")}>
+            <Send className="h-4 w-4 mr-2" /> Submit Your Event
+          </Button>
         </div>
 
         <div className="sticky top-0 z-30 -mx-6 px-6 py-4 bg-background/95 backdrop-blur-sm border-b border-border/50">
