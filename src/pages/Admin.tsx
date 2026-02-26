@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { fetchEvents, createEvent, updateEvent, deleteEvent, getSiteSetting, updateSiteSetting, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
+import { fetchEvents, createEvent, updateEvent, deleteEvent, fetchPendingEvents, getSiteSetting, updateSiteSetting, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
 import { uploadEventImage } from "@/lib/upload-image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,8 +10,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, LogOut, ArrowLeft, Pin, PinOff } from "lucide-react";
+import { Pencil, Trash2, Plus, LogOut, ArrowLeft, Pin, PinOff, Check, X } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
+import { supabase } from "@/integrations/supabase/client";
 
 const STATUSES: EventStatus[] = ["upcoming", "live", "past"];
 
@@ -55,6 +56,7 @@ const Admin = () => {
   const [uploading, setUploading] = useState(false);
   const [submitEventUrl, setSubmitEventUrl] = useState("");
   const [savingUrl, setSavingUrl] = useState(false);
+  const [pendingEvents, setPendingEvents] = useState<DbEvent[]>([]);
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,6 +92,7 @@ const Admin = () => {
   useEffect(() => {
     if (user) {
       loadEvents();
+      loadPendingEvents();
       getSiteSetting("submit_event_url").then(setSubmitEventUrl).catch(() => {});
     }
   }, [user]);
@@ -97,12 +100,46 @@ const Admin = () => {
   const loadEvents = async () => {
     try {
       setLoading(true);
-      const data = await fetchEvents();
-      setEvents(data);
+      const data = await fetchEvents(true);
+      // Only show approved events in the main table
+      setEvents(data.filter((e: any) => (e as any).approval_status !== "pending"));
     } catch {
       toast.error("Failed to load events");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadPendingEvents = async () => {
+    try {
+      const data = await fetchPendingEvents();
+      setPendingEvents(data);
+    } catch {
+      // silent
+    }
+  };
+
+  const handleApprove = async (id: string) => {
+    try {
+      // @ts-ignore
+      const { error } = await supabase.from("events").update({ approval_status: "approved" }).eq("id", id);
+      if (error) throw error;
+      toast.success("Event approved!");
+      loadEvents();
+      loadPendingEvents();
+    } catch {
+      toast.error("Failed to approve event");
+    }
+  };
+
+  const handleReject = async (id: string) => {
+    if (!confirm("Reject and delete this submission?")) return;
+    try {
+      await deleteEvent(id);
+      toast.success("Submission rejected");
+      loadPendingEvents();
+    } catch {
+      toast.error("Failed to reject event");
     }
   };
 
@@ -305,6 +342,63 @@ const Admin = () => {
             </form>
           </CardContent>
         </Card>
+
+        {/* Pending Submissions */}
+        {pendingEvents.length > 0 && (
+          <Card className="mb-6 border-yellow-500/30">
+            <CardHeader>
+              <CardTitle className="font-display text-base text-yellow-500">
+                Pending Submissions ({pendingEvents.length})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="rounded-lg border border-border overflow-hidden">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Category</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Host</TableHead>
+                      <TableHead>Platform</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {pendingEvents.map((event) => (
+                      <TableRow key={event.id}>
+                        <TableCell className="font-medium">{event.title}</TableCell>
+                        <TableCell>
+                          <span className="rounded-md bg-secondary px-2 py-1 text-xs">{event.category}</span>
+                        </TableCell>
+                        <TableCell><StatusBadge status={event.status} /></TableCell>
+                        <TableCell className="text-sm text-muted-foreground">
+                          {new Date(event.event_date).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell className="text-sm text-muted-foreground">{event.host}</TableCell>
+                        <TableCell className="text-sm text-muted-foreground">{event.platform}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end gap-1">
+                            <Button variant="ghost" size="icon" onClick={() => handleApprove(event.id)} title="Approve">
+                              <Check className="h-4 w-4 text-green-500" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => handleReject(event.id)} title="Reject" className="text-destructive hover:text-destructive">
+                              <X className="h-4 w-4" />
+                            </Button>
+                            <Button variant="ghost" size="icon" onClick={() => handleEdit(event)} title="Edit before approving">
+                              <Pencil className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Actions */}
         <div className="mb-6 flex items-center justify-between">

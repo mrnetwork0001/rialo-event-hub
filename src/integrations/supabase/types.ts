@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       events: {
         Row: {
+          approval_status: string
           category: Database["public"]["Enums"]["event_category"]
           created_at: string
           description: string
@@ -35,6 +36,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          approval_status?: string
           category: Database["public"]["Enums"]["event_category"]
           created_at?: string
           description?: string
@@ -54,6 +56,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          approval_status?: string
           category?: Database["public"]["Enums"]["event_category"]
           created_at?: string
           description?: string

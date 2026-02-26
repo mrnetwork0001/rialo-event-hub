@@ -27,11 +27,27 @@ export const CATEGORIES: EventCategory[] = [
   "AMA", "Quiz & Games", "X Space", "Workshop", "Meetup", "Builders Showcase", "Educational"
 ];
 
-export async function fetchEvents(): Promise<DbEvent[]> {
-  const { data, error } = await supabase
+export async function fetchEvents(includeAll = false): Promise<DbEvent[]> {
+  let query = supabase
     .from("events")
     .select("*")
     .order("event_date", { ascending: false });
+  if (!includeAll) {
+    // @ts-ignore - approval_status column added via migration
+    query = query.eq("approval_status", "approved");
+  }
+  const { data, error } = await query;
+  if (error) throw error;
+  return (data ?? []) as DbEvent[];
+}
+
+export async function fetchPendingEvents(): Promise<DbEvent[]> {
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    // @ts-ignore - approval_status column added via migration
+    .eq("approval_status", "pending")
+    .order("created_at", { ascending: false });
   if (error) throw error;
   return (data ?? []) as DbEvent[];
 }
