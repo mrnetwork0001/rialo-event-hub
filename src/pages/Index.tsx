@@ -6,6 +6,7 @@ import EventCard from "@/components/EventCard";
 import EventDetailModal from "@/components/EventDetailModal";
 import FeaturedEvent from "@/components/FeaturedEvent";
 import EmptyState from "@/components/EmptyState";
+import StatsBar from "@/components/StatsBar";
 import { fetchEvents, autoUpdateEventStatus, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -90,10 +91,12 @@ const Index = () => {
       <main className="mx-auto max-w-6xl px-6 pb-20">
         {/* Submit Event button */}
         <div className="mb-4">
-          <Button size="sm" onClick={() => navigate("/submit-event")}>
-            <Send className="h-4 w-4 mr-2" /> Submit Your Event
-          </Button>
-        </div>
+           <Button size="sm" onClick={() => navigate("/submit-event")}>
+             <Send className="h-4 w-4 mr-2" /> Submit Your Event
+           </Button>
+         </div>
+
+         <StatsBar events={events} />
 
         <div className="sticky top-0 z-30 -mx-6 px-6 py-4 bg-background/95 backdrop-blur-sm border-b border-border/50">
           <div className="mb-4">
