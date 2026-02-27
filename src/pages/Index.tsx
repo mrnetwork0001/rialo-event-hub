@@ -5,6 +5,7 @@ import CategoryFilter from "@/components/CategoryFilter";
 import EventCard from "@/components/EventCard";
 import EventDetailModal from "@/components/EventDetailModal";
 import FeaturedEvent from "@/components/FeaturedEvent";
+import EmptyState from "@/components/EmptyState";
 import { fetchEvents, autoUpdateEventStatus, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -167,10 +168,7 @@ const Index = () => {
             )}
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <p className="text-lg font-medium text-muted-foreground">No events found</p>
-            <p className="text-sm text-muted-foreground/70">Try adjusting your filters</p>
-          </div>
+          <EmptyState onClearFilters={() => { setCategory("All"); setStatusFilter("all"); }} />
         )}
       </main>
 
