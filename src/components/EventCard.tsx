@@ -1,8 +1,6 @@
-import { useState } from "react";
 import type { DbEvent } from "@/lib/supabase-events";
 import StatusBadge from "./StatusBadge";
 import CountdownTimer from "./CountdownTimer";
-import RecapModal from "./RecapModal";
 import { Calendar, MapPin, Users, ExternalLink, Play, Pin } from "lucide-react";
 
 interface EventCardProps {
@@ -11,10 +9,7 @@ interface EventCardProps {
 }
 
 const EventCard = ({ event, onSelect }: EventCardProps) => {
-  const [showRecap, setShowRecap] = useState(false);
-
   return (
-    <>
     <div
       onClick={() => onSelect(event)}
       className="group cursor-pointer rounded-xl border border-border bg-card overflow-hidden card-hover"
@@ -92,19 +87,16 @@ const EventCard = ({ event, onSelect }: EventCardProps) => {
         )}
 
         {event.status === "past" && event.recording_link && (
-          <button
-            onClick={(e) => { e.stopPropagation(); setShowRecap(true); }}
+          <a
+            href={event.recording_link}
+            onClick={(e) => e.stopPropagation()}
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-secondary border border-border py-2.5 text-sm font-medium text-foreground hover:border-primary/30 transition-colors"
           >
             <Play className="h-4 w-4" /> View Recap
-          </button>
+          </a>
         )}
       </div>
     </div>
-    {showRecap && event.recording_link && (
-      <RecapModal url={event.recording_link} onClose={() => setShowRecap(false)} />
-    )}
-    </>
   );
 };
 
