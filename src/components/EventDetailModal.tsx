@@ -1,5 +1,7 @@
+import { useState } from "react";
 import type { DbEvent } from "@/lib/supabase-events";
 import StatusBadge from "./StatusBadge";
+import RecapModal from "./RecapModal";
 import CountdownTimer from "./CountdownTimer";
 import { Calendar, MapPin, Users, ExternalLink, Play, Share2, X, Pin } from "lucide-react";
 
@@ -9,8 +11,9 @@ interface EventDetailModalProps {
 }
 
 const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
-  if (!event) return null;
+  const [showRecap, setShowRecap] = useState(false);
 
+  if (!event) return null;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
@@ -95,12 +98,12 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
             </a>
           )}
           {event.status === "past" && event.recording_link && (
-            <a
-              href={event.recording_link}
+            <button
+              onClick={() => setShowRecap(true)}
               className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground py-3 text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               <Play className="h-4 w-4" /> View Recap
-            </a>
+            </button>
           )}
           {event.share_link && (
             <a
@@ -112,6 +115,9 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
           )}
         </div>
       </div>
+      {showRecap && event.recording_link && (
+        <RecapModal url={event.recording_link} onClose={() => setShowRecap(false)} />
+      )}
     </div>
   );
 };
