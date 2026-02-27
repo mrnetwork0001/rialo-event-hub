@@ -9,7 +9,7 @@ interface StatusBadgeProps {
 const statusConfig: Record<EventStatus, { label: string; classes: string; dot?: boolean }> = {
   live: {
     label: "LIVE",
-    classes: "bg-live/20 text-live border-live/40",
+    classes: "bg-red-600 text-white border-red-600 shadow-[0_0_15px_rgba(220,38,38,0.8)]",
     dot: true,
   },
   upcoming: {
@@ -34,7 +34,7 @@ const StatusBadge = ({ status, className }: StatusBadgeProps) => {
       )}
     >
       {config.dot && (
-        <span className="h-2 w-2 rounded-full bg-live animate-pulse-live" />
+        <span className="h-2 w-2 rounded-full bg-white animate-pulse-live" />
       )}
       {config.label}
     </span>
