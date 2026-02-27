@@ -133,8 +133,14 @@ const Index = () => {
         ) : paginatedEvents.length > 0 ? (
           <>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {paginatedEvents.map((event) => (
-                <EventCard key={event.id} event={event} onSelect={setSelectedEvent} />
+              {paginatedEvents.map((event, index) => (
+                <div
+                  key={event.id}
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 80}ms`, animationFillMode: 'both' }}
+                >
+                  <EventCard event={event} onSelect={setSelectedEvent} />
+                </div>
               ))}
             </div>
 
