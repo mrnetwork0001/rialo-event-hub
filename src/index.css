@@ -93,6 +93,12 @@
     animation: marquee 20s linear infinite;
   }
 
+  @media (max-width: 767px) {
+    .animate-marquee {
+      animation: marquee 10s linear infinite;
+    }
+  }
+
   .card-hover:hover {
     @apply border-primary/60;
     transform: scale(1.03) translateY(-4px);
