@@ -45,7 +45,7 @@ const StatsBar = ({ events }: StatsBarProps) => {
   ];
 
   const StatContent = () => (
-    <div className="flex items-center justify-center gap-8 px-4 min-w-full shrink-0">
+    <div className="flex items-center justify-center gap-8 px-4 shrink-0">
       {stats.map((stat, i) => (
         <div key={stat.label} className="flex items-center gap-4">
           {i > 0 && <div className="h-4 w-px bg-border/60" />}
