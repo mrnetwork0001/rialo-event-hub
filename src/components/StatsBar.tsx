@@ -45,7 +45,7 @@ const StatsBar = ({ events }: StatsBarProps) => {
   ];
 
   const StatContent = () => (
-    <div className="flex items-center gap-8 px-4">
+    <div className="flex items-center justify-center gap-8 px-4 min-w-full shrink-0">
       {stats.map((stat, i) => (
         <div key={stat.label} className="flex items-center gap-4">
           {i > 0 && <div className="h-4 w-px bg-border/60" />}
@@ -61,7 +61,7 @@ const StatsBar = ({ events }: StatsBarProps) => {
 
   return (
     <div className="mb-6 rounded-lg border border-border/60 bg-card/60 backdrop-blur-sm py-2.5 overflow-hidden group">
-      <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
+      <div className="flex animate-marquee group-hover:[animation-play-state:paused]">
         <StatContent />
         <StatContent />
       </div>
