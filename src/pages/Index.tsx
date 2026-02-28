@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import HeroSection from "@/components/HeroSection";
+import LiveBanner from "@/components/LiveBanner";
 import CategoryFilter from "@/components/CategoryFilter";
 import EventCard from "@/components/EventCard";
 import EventDetailModal from "@/components/EventDetailModal";
@@ -37,6 +38,10 @@ const Index = () => {
 
   const featuredEvent = useMemo(() => {
     return events.find((e) => e.is_pinned && (e.status === "live" || e.status === "upcoming"));
+  }, [events]);
+
+  const liveEvent = useMemo(() => {
+    return events.find((e) => e.status === "live");
   }, [events]);
 
   const filtered = useMemo(() => {
@@ -86,6 +91,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {liveEvent && <LiveBanner event={liveEvent} onSelect={setSelectedEvent} />}
       <HeroSection />
 
       <main className="mx-auto max-w-6xl px-6 pb-20">
