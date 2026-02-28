@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Calendar, Users, Clock } from "lucide-react";
 import type { DbEvent } from "@/lib/supabase-events";
 
@@ -6,24 +6,37 @@ interface StatsBarProps {
   events: DbEvent[];
 }
 
-function getNextEventCountdown(events: DbEvent[]): string {
+function getNextEventDate(events: DbEvent[]): number | null {
   const now = Date.now();
   const upcoming = events
     .filter((e) => e.status === "upcoming" || e.status === "live")
     .map((e) => new Date(e.event_date).getTime())
     .filter((t) => t > now)
     .sort((a, b) => a - b);
+  return upcoming.length > 0 ? upcoming[0] : null;
+}
 
-  if (upcoming.length === 0) return "TBD";
-
-  const diff = upcoming[0] - now;
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  return `${String(days).padStart(2, "0")}d ${String(hours).padStart(2, "0")}h`;
+function formatCountdown(target: number | null): string {
+  if (!target) return "TBD";
+  const diff = target - Date.now();
+  if (diff <= 0) return "Now!";
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const s = Math.floor((diff % (1000 * 60)) / 1000);
+  return `${String(d).padStart(2, "0")}d ${String(h).padStart(2, "0")}h ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s`;
 }
 
 const StatsBar = ({ events }: StatsBarProps) => {
-  const countdown = useMemo(() => getNextEventCountdown(events), [events]);
+  const nextDate = useMemo(() => getNextEventDate(events), [events]);
+  const [countdown, setCountdown] = useState(() => formatCountdown(nextDate));
+
+  useEffect(() => {
+    if (!nextDate) return;
+    setCountdown(formatCountdown(nextDate));
+    const interval = setInterval(() => setCountdown(formatCountdown(nextDate)), 1000);
+    return () => clearInterval(interval);
+  }, [nextDate]);
 
   const stats = [
     { icon: Calendar, label: "Total Events", value: events.length.toLocaleString() },
