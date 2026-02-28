@@ -44,13 +44,11 @@ const StatsBar = ({ events }: StatsBarProps) => {
     { icon: Clock, label: "Next Event in", value: countdown },
   ];
 
-  return (
-    <div className="mb-6 rounded-lg border border-border/60 bg-card/60 backdrop-blur-sm px-4 py-2.5 flex items-center justify-between gap-4 overflow-x-auto">
+  const StatContent = () => (
+    <div className="flex items-center gap-8 px-4">
       {stats.map((stat, i) => (
         <div key={stat.label} className="flex items-center gap-4">
-          {i > 0 && (
-            <div className="hidden sm:block h-4 w-px bg-border/60" />
-          )}
+          {i > 0 && <div className="h-4 w-px bg-border/60" />}
           <div className="flex items-center gap-2 whitespace-nowrap">
             <stat.icon className="h-3.5 w-3.5 text-primary/70" />
             <span className="text-xs text-muted-foreground">{stat.label}:</span>
@@ -58,6 +56,15 @@ const StatsBar = ({ events }: StatsBarProps) => {
           </div>
         </div>
       ))}
+    </div>
+  );
+
+  return (
+    <div className="mb-6 rounded-lg border border-border/60 bg-card/60 backdrop-blur-sm py-2.5 overflow-hidden group">
+      <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
+        <StatContent />
+        <StatContent />
+      </div>
     </div>
   );
 };
