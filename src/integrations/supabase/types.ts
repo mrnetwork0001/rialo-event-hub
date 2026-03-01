@@ -77,6 +77,44 @@ export type Database = {
         }
         Relationships: []
       }
+      reminders: {
+        Row: {
+          channel: string
+          contact: string
+          created_at: string
+          event_id: string
+          id: string
+          remind_at: string
+          sent: boolean
+        }
+        Insert: {
+          channel: string
+          contact: string
+          created_at?: string
+          event_id: string
+          id?: string
+          remind_at: string
+          sent?: boolean
+        }
+        Update: {
+          channel?: string
+          contact?: string
+          created_at?: string
+          event_id?: string
+          id?: string
+          remind_at?: string
+          sent?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reminders_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       site_settings: {
         Row: {
           key: string
