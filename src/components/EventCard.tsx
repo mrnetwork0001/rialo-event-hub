@@ -1,7 +1,9 @@
+import { useState } from "react";
 import type { DbEvent } from "@/lib/supabase-events";
 import StatusBadge from "./StatusBadge";
 import CountdownTimer from "./CountdownTimer";
-import { Calendar, MapPin, Users, ExternalLink, Play, Pin } from "lucide-react";
+import RemindMeDialog from "./RemindMeDialog";
+import { Calendar, MapPin, Users, ExternalLink, Play, Pin, Bell } from "lucide-react";
 
 interface EventCardProps {
   event: DbEvent;
@@ -9,7 +11,10 @@ interface EventCardProps {
 }
 
 const EventCard = ({ event, onSelect }: EventCardProps) => {
+  const [remindOpen, setRemindOpen] = useState(false);
+
   return (
+    <>
     <div
       onClick={() => onSelect(event)}
       className="group cursor-pointer rounded-xl border border-border bg-card overflow-hidden card-hover"
@@ -95,8 +100,19 @@ const EventCard = ({ event, onSelect }: EventCardProps) => {
             <Play className="h-4 w-4" /> View Recap
           </a>
         )}
+
+        {event.status === "upcoming" && (
+          <button
+            onClick={(e) => { e.stopPropagation(); setRemindOpen(true); }}
+            className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/30 bg-primary/5 py-2.5 text-sm font-semibold text-primary hover:bg-primary/10 transition-colors"
+          >
+            <Bell className="h-4 w-4" /> Remind Me
+          </button>
+        )}
       </div>
     </div>
+    <RemindMeDialog event={event} open={remindOpen} onOpenChange={setRemindOpen} />
+    </>
   );
 };
 

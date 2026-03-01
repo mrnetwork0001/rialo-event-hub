@@ -1,7 +1,9 @@
+import { useState } from "react";
 import type { DbEvent } from "@/lib/supabase-events";
 import StatusBadge from "./StatusBadge";
 import CountdownTimer from "./CountdownTimer";
-import { Calendar, MapPin, Users, ExternalLink, Play, Share2, X, Pin } from "lucide-react";
+import RemindMeDialog from "./RemindMeDialog";
+import { Calendar, MapPin, Users, ExternalLink, Play, Share2, X, Pin, Bell } from "lucide-react";
 
 interface EventDetailModalProps {
   event: DbEvent | null;
@@ -9,6 +11,7 @@ interface EventDetailModalProps {
 }
 
 const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
+  const [remindOpen, setRemindOpen] = useState(false);
   if (!event) return null;
 
   return (
@@ -94,6 +97,14 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
               <ExternalLink className="h-4 w-4" /> RSVP / Join
             </a>
           )}
+          {event.status === "upcoming" && (
+            <button
+              onClick={() => setRemindOpen(true)}
+              className="flex items-center justify-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm font-semibold text-primary hover:bg-primary/10 transition-colors"
+            >
+              <Bell className="h-4 w-4" /> Remind Me
+            </button>
+          )}
           {event.status === "past" && event.recording_link && (
             <a
               href={event.recording_link}
@@ -111,6 +122,8 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
             </a>
           )}
         </div>
+
+        <RemindMeDialog event={event} open={remindOpen} onOpenChange={setRemindOpen} />
       </div>
     </div>
   );
