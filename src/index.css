@@ -101,4 +101,10 @@
       0 0 20px -4px hsl(38, 92%, 50%, 0.25),
       0 12px 40px -8px hsl(38, 92%, 50%, 0.2);
   }
+
+  .timeline-glow-line {
+    box-shadow:
+      0 0 8px 2px hsl(38, 92%, 50%, 0.3),
+      0 0 20px 4px hsl(38, 92%, 50%, 0.15);
+  }
 }
