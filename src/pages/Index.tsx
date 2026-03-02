@@ -8,6 +8,7 @@ import EventDetailModal from "@/components/EventDetailModal";
 import FeaturedEvent from "@/components/FeaturedEvent";
 import EmptyState from "@/components/EmptyState";
 import StatsBar from "@/components/StatsBar";
+import PastTimeline from "@/components/PastTimeline";
 import { fetchEvents, autoUpdateEventStatus, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -138,17 +139,33 @@ const Index = () => {
           </div>
         ) : paginatedEvents.length > 0 ? (
           <>
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {paginatedEvents.map((event, index) => (
-                <div
-                  key={event.id}
-                  className="animate-fade-in"
-                  style={{ animationDelay: `${index * 80}ms`, animationFillMode: 'both' }}
-                >
-                  <EventCard event={event} onSelect={setSelectedEvent} />
-                </div>
-              ))}
-            </div>
+            {/* Non-past events in grid */}
+            {paginatedEvents.filter(e => e.status !== "past").length > 0 && (
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {paginatedEvents.filter(e => e.status !== "past").map((event, index) => (
+                  <div
+                    key={event.id}
+                    className="animate-fade-in"
+                    style={{ animationDelay: `${index * 80}ms`, animationFillMode: 'both' }}
+                  >
+                    <EventCard event={event} onSelect={setSelectedEvent} />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Past events as timeline */}
+            {paginatedEvents.filter(e => e.status === "past").length > 0 && (
+              <div>
+                {paginatedEvents.some(e => e.status !== "past") && (
+                  <h2 className="mt-10 mb-2 font-display text-xl font-semibold text-foreground">Past Events</h2>
+                )}
+                <PastTimeline
+                  events={paginatedEvents.filter(e => e.status === "past")}
+                  onSelect={setSelectedEvent}
+                />
+              </div>
+            )}
 
             {totalPages > 1 && (
               <div className="mt-8 flex items-center justify-center gap-2">
