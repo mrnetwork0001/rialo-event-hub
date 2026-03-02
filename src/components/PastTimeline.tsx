@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { DbEvent } from "@/lib/supabase-events";
-import { Calendar, MapPin, Users, Play } from "lucide-react";
+import { Calendar, MapPin, Users, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   HoverCard,
   HoverCardTrigger,
@@ -12,8 +12,14 @@ interface PastTimelineProps {
   onSelect: (event: DbEvent) => void;
 }
 
+const PAST_PER_PAGE = 8;
+
 const PastTimeline = ({ events, onSelect }: PastTimelineProps) => {
+  const [page, setPage] = useState(1);
   if (events.length === 0) return null;
+
+  const totalPages = Math.ceil(events.length / PAST_PER_PAGE);
+  const paged = events.slice((page - 1) * PAST_PER_PAGE, page * PAST_PER_PAGE);
 
   return (
     <div className="relative mt-8">
@@ -21,7 +27,7 @@ const PastTimeline = ({ events, onSelect }: PastTimelineProps) => {
       <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-primary/60 via-primary/30 to-transparent timeline-glow-line" />
 
       <div className="space-y-0">
-        {events.map((event, index) => {
+        {paged.map((event, index) => {
           const isLeft = index % 2 === 0;
 
           return (
@@ -48,9 +54,7 @@ const PastTimeline = ({ events, onSelect }: PastTimelineProps) => {
                       onClick={() => onSelect(event)}
                       className="group relative flex h-5 w-5 items-center justify-center"
                     >
-                      {/* Outer glow ring */}
                       <span className="absolute h-5 w-5 rounded-full bg-primary/20 group-hover:bg-primary/40 group-hover:scale-[2] transition-all duration-300" />
-                      {/* Inner dot */}
                       <span className="relative h-3 w-3 rounded-full bg-primary border-2 border-background group-hover:bg-primary group-hover:shadow-[0_0_12px_hsl(38,92%,50%,0.6)] transition-all duration-300" />
                     </button>
                   </HoverCardTrigger>
@@ -89,6 +93,38 @@ const PastTimeline = ({ events, onSelect }: PastTimelineProps) => {
           );
         })}
       </div>
+
+      {totalPages > 1 && (
+        <div className="mt-8 flex items-center justify-center gap-2">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+            <button
+              key={p}
+              onClick={() => setPage(p)}
+              className={`flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium transition-colors ${
+                page === p
+                  ? "bg-primary text-primary-foreground"
+                  : "border border-border text-muted-foreground hover:bg-secondary"
+              }`}
+            >
+              {p}
+            </button>
+          ))}
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted-foreground hover:bg-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
