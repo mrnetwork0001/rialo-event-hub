@@ -24,7 +24,13 @@ const PastTimeline = ({ events, onSelect }: PastTimelineProps) => {
   return (
     <div className="relative mt-8">
       {/* Glowing center line */}
-      <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-primary/60 via-primary/30 to-transparent timeline-glow-line" />
+      <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2 bg-gradient-to-b from-primary/60 via-primary/30 to-transparent timeline-glow-line">
+        {/* Traveling orb */}
+        <div className="timeline-orb absolute left-1/2 -translate-x-1/2 h-4 w-4 -ml-px">
+          <span className="absolute inset-0 rounded-full bg-primary/40 blur-md" />
+          <span className="absolute inset-1 rounded-full bg-primary shadow-[0_0_12px_hsl(38,92%,50%,0.7)]" />
+        </div>
+      </div>
 
       <div className="space-y-0">
         {paged.map((event, index) => {
