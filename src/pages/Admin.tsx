@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, LogOut, ArrowLeft, Pin, PinOff, Check, X } from "lucide-react";
+import { Pencil, Trash2, Plus, LogOut, ArrowLeft, Pin, PinOff, Check, X, Copy } from "lucide-react";
 import StatusBadge from "@/components/StatusBadge";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -183,6 +183,29 @@ const Admin = () => {
     } catch {
       toast.error("Failed to update pin status");
     }
+  };
+
+  const handleDuplicate = (event: DbEvent) => {
+    setEditingId(null);
+    setForm({
+      title: `${event.title} (Copy)`,
+      description: event.description,
+      category: event.category,
+      status: "upcoming",
+      event_date: "",
+      host: event.host,
+      platform: event.platform,
+      join_link: event.join_link || "",
+      share_link: event.share_link || "",
+      recap_summary: "",
+      recording_link: "",
+      image_url: event.image_url || "",
+      is_pinned: false,
+      rsvp_count: 0,
+    });
+    setImageFile(null);
+    setImagePreview(null);
+    setShowForm(true);
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -553,10 +576,13 @@ const Admin = () => {
                         >
                           {event.is_pinned ? <PinOff className="h-4 w-4 text-primary" /> : <Pin className="h-4 w-4" />}
                         </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(event)}>
+                        <Button variant="ghost" size="icon" onClick={() => handleEdit(event)} title="Edit">
                           <Pencil className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(event.id)} className="text-destructive hover:text-destructive">
+                        <Button variant="ghost" size="icon" onClick={() => handleDuplicate(event)} title="Duplicate event">
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => handleDelete(event.id)} className="text-destructive hover:text-destructive" title="Delete">
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
