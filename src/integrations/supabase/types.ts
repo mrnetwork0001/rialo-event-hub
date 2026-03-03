@@ -133,6 +133,24 @@ export type Database = {
         }
         Relationships: []
       }
+      site_visits: {
+        Row: {
+          id: string
+          visited_at: string
+          visitor_hash: string
+        }
+        Insert: {
+          id?: string
+          visited_at?: string
+          visitor_hash: string
+        }
+        Update: {
+          id?: string
+          visited_at?: string
+          visitor_hash?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -157,6 +175,7 @@ export type Database = {
     }
     Functions: {
       auto_update_event_status: { Args: never; Returns: undefined }
+      get_visitor_count: { Args: never; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

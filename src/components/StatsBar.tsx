@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { Calendar, Users, Clock } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import type { DbEvent } from "@/lib/supabase-events";
 
 interface StatsBarProps {
@@ -27,9 +28,44 @@ function formatCountdown(target: number | null): string {
   return `${String(d).padStart(2, "0")}d ${String(h).padStart(2, "0")}h ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s`;
 }
 
+/** Simple hash of a string for anonymous visitor tracking */
+async function getVisitorHash(): Promise<string> {
+  const raw = [
+    navigator.userAgent,
+    navigator.language,
+    screen.width + "x" + screen.height,
+    Intl.DateTimeFormat().resolvedOptions().timeZone,
+  ].join("|");
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(raw));
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 const StatsBar = ({ events }: StatsBarProps) => {
   const nextDate = useMemo(() => getNextEventDate(events), [events]);
   const [countdown, setCountdown] = useState(() => formatCountdown(nextDate));
+  const [visitorCount, setVisitorCount] = useState<string>("...");
+
+  // Track visit & fetch count
+  useEffect(() => {
+    (async () => {
+      try {
+        const hash = await getVisitorHash();
+        // Record visit (ignore errors for duplicates etc.)
+        await supabase.from("site_visits").insert({ visitor_hash: hash });
+      } catch {
+        // silent
+      }
+      try {
+        const { data } = await supabase.rpc("get_visitor_count");
+        if (data != null) {
+          const count = Number(data);
+          setVisitorCount(count >= 1000 ? `${(count / 1000).toFixed(1).replace(/\.0$/, "")}k+` : String(count));
+        }
+      } catch {
+        setVisitorCount("—");
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     if (!nextDate) return;
@@ -40,7 +76,7 @@ const StatsBar = ({ events }: StatsBarProps) => {
 
   const stats = [
     { icon: Calendar, label: "Total Events", value: events.length.toLocaleString() },
-    { icon: Users, label: "Community Members", value: "5k+" },
+    { icon: Users, label: "Community Members", value: visitorCount },
     { icon: Clock, label: "Next Event in", value: countdown },
   ];
 
