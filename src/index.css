@@ -107,4 +107,13 @@
       0 0 8px 2px hsl(38, 92%, 50%, 0.3),
       0 0 20px 4px hsl(38, 92%, 50%, 0.15);
   }
+
+  @keyframes timeline-orb {
+    0%, 100% { top: 0%; }
+    50% { top: 100%; }
+  }
+
+  .timeline-orb {
+    animation: timeline-orb 4s ease-in-out infinite;
+  }
 }
