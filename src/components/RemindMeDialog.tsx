@@ -104,6 +104,22 @@ const RemindMeDialog = ({ event, open, onOpenChange }: RemindMeDialogProps) => {
             </RadioGroup>
           </div>
 
+          {channel === "telegram" && (
+            <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 space-y-2">
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                <span className="font-semibold text-foreground">First time?</span> You need to start a conversation with our bot before we can send you reminders.
+              </p>
+              <a
+                href="https://t.me/RialoEventBot?start=remind"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+              >
+                <Send className="h-3 w-3" /> Open @RialoEventBot on Telegram
+              </a>
+            </div>
+          )}
+
           <div className="space-y-2">
             <Label htmlFor="contact">
               {channel === "sms" ? "Phone number (with country code)" : "Telegram username"}
