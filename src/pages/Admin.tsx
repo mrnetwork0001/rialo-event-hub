@@ -125,6 +125,19 @@ const Admin = () => {
       const { error } = await supabase.from("events").update({ approval_status: "approved" }).eq("id", id);
       if (error) throw error;
       toast.success("Event approved!");
+      
+      // Post to Discord
+      supabase.functions.invoke("discord-webhook", {
+        body: { event_id: id },
+      }).then(({ error: discordError }) => {
+        if (discordError) {
+          console.error("Discord webhook failed:", discordError);
+          toast.error("Event approved but Discord notification failed");
+        } else {
+          toast.success("Posted to Discord!");
+        }
+      });
+
       loadEvents();
       loadPendingEvents();
     } catch {
