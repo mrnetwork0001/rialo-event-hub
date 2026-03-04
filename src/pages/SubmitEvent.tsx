@@ -80,6 +80,23 @@ const SubmitEvent = () => {
 
       if (error) throw error;
 
+      // Notify admins via Telegram
+      try {
+        await supabase.functions.invoke("notify-telegram", {
+          body: {
+            type: "new_submission",
+            event: {
+              title: form.title.trim(),
+              category: form.category,
+              host: hosts.join(", "),
+              event_date: new Date(form.event_date).toISOString(),
+            },
+          },
+        });
+      } catch {
+        // non-blocking
+      }
+
       toast.success("Event submitted! It will appear once approved by an admin.");
       navigate("/");
     } catch (err: any) {
