@@ -124,28 +124,6 @@ const Admin = () => {
       // @ts-ignore
       const { error } = await supabase.from("events").update({ approval_status: "approved" }).eq("id", id);
       if (error) throw error;
-
-      // Notify subscribers via Telegram
-      const approvedEvent = pendingEvents.find((e) => e.id === id);
-      if (approvedEvent) {
-        try {
-          await supabase.functions.invoke("notify-telegram", {
-            body: {
-              type: "event_approved",
-              event: {
-                title: approvedEvent.title,
-                category: approvedEvent.category,
-                host: approvedEvent.host,
-                event_date: approvedEvent.event_date,
-                join_link: approvedEvent.join_link,
-              },
-            },
-          });
-        } catch {
-          // non-blocking
-        }
-      }
-
       toast.success("Event approved!");
       loadEvents();
       loadPendingEvents();

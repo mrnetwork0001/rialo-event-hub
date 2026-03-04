@@ -2,12 +2,3 @@ project_id = "qqhlosycufmvrjedlvtf"
 
 [functions.send-reminders]
 verify_jwt = false
-
-[functions.telegram-webhook]
-verify_jwt = false
-
-[functions.notify-telegram]
-verify_jwt = false
-
-[functions.grant-admin]
-verify_jwt = false
