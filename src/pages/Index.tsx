@@ -109,7 +109,7 @@ const Index = () => {
           </div>
 
           {/* Filters bar */}
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="sticky top-0 z-30 -mx-4 bg-background/95 backdrop-blur-sm px-4 py-3 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             {/* Status tabs */}
             <div className="flex gap-1 rounded-lg border border-border bg-secondary/30 p-1">
               {statusTabs.map((tab) => (
