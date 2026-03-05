@@ -88,10 +88,9 @@ const Sidebar = () => {
         ) : (
           <button
             onClick={() => {
-              navigate("/auth");
-              setMobileOpen(false);
+              // Sign in button visible but disabled
             }}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground/50 cursor-default transition-colors"
           >
             <LogIn className="h-4.5 w-4.5 shrink-0" />
             {!collapsed && <span>Sign In</span>}
