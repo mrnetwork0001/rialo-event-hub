@@ -1,73 +1,54 @@
-# Welcome to your Lovable project
+# Rialo Event Hub
 
-## Project info
+<img width="1197" height="941" alt="06 03 2026_23 01 36_REC" src="https://github.com/user-attachments/assets/41cb88b5-17cd-43cd-96e5-707f6a3ceffb" />
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
 
-## How can I edit this code?
+The Single Source of Truth for the Rialo Ecosystem.
 
-There are several ways of editing your application.
+Rialo Event Hub is a high-performance, real-time dashboard designed to solve information fragmentation within the Rialo network. It aggregates AMAs, Quizzes, Workshops, and Meetups into a single, interactive interface, ensuring that no community member ever misses an "Ecosystem Pulse."
 
-**Use Lovable**
+[Explore the Live Hub](https://rialo-event-hub.vercel.app)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Key Features
+- Real-Time Event Tracking: Categorized views for Live, Upcoming, and Past events with sub-second status updates.
+- Automated Submission Flow: Event hosts can submit details directly via the UI for admin approval, creating a self-sustaining ecosystem calendar.
+- Multi-Channel Reminders: Native integration with the @RialoEventHub Telegram Bot and SMS notifications to drive retention.
+- Recap-in-a-Flash: An automated archive of past event links, recordings, and AI-generated summaries.
+- Vibe-First Design: A sleek, responsive interface built for the modern Web3 user.
 
-Changes made via Lovable will be committed automatically to this repo.
 
-**Use your preferred IDE**
+## Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+This project is built using the "Vibe Coding" methodology, prioritizing fast iteration and AI-assisted development.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Frontend: React + Vite
+- Styling: Tailwind CSS + Shadcn UI
+- Backend/Database: Supabase (PostgreSQL + Realtime)
+- Deployment: Vercel
+- Automation: Pipedream / Node.js (Discord-to-Web Bridge)
 
-Follow these steps:
+## Roadmap
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Phase 1: Foundation (Current)
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- [x] MVP Deployment with Real-time Grid.
+- [x] Community Event Submission & Admin Approval Flow.
+- [x] Telegram/SMS "Remind Me" functionality.
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Phase 2: Engagement (Q2 2026)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+- [ ] AI Recaps: Automatic 30-second summary generation for X Spaces and YouTube links.
+- [ ] [ ] Community Pulse: Real-time projection of events listed on the hub on Rialo Discord 
 
-**Edit a file directly in GitHub**
+### Phase 3: On-Chain (Q3 2026)
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- [ ] Verified Attendance: On-chain proof of participation for workshop attendees.
+- [ ] [ ] Rialo ID Integration: One-click RSVP using Rialo's native identity layer.
 
-**Use GitHub Codespaces**
+# License
+Distributed under the MIT License. See LICENSE for more information.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Contact
+MrNetwork - [MrNetwork](https://x.com/encrypt_wizard)
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Project Link: [Click Here](https://github.com/mrnetwork0001/rialo-event-hub)
