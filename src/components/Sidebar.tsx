@@ -81,10 +81,6 @@ const Sidebar = () => {
             </button>
           );
         })}
-      </nav>
-
-      {/* External links */}
-      <div className="border-t border-border/50 px-2 py-4 space-y-1">
         {externalLinks.map((link) => (
           <a
             key={link.label}
@@ -97,7 +93,7 @@ const Sidebar = () => {
             {!collapsed && <span>{link.label}</span>}
           </a>
         ))}
-      </div>
+      </nav>
 
       {/* Auth */}
       <div className="border-t border-border/50 px-2 py-4">
