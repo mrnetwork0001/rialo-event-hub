@@ -4,7 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import HeroBanner from "@/components/HeroBanner";
 import LiveBanner from "@/components/LiveBanner";
 import EventCardNew from "@/components/EventCardNew";
-import EventDetailModal from "@/components/EventDetailModal";
+
 import EmptyState from "@/components/EmptyState";
 import StatsBar from "@/components/StatsBar";
 import { fetchEvents, autoUpdateEventStatus, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
@@ -24,7 +24,7 @@ const EVENTS_PER_PAGE = 12;
 
 const Index = () => {
   const [category, setCategory] = useState<EventCategory | "All">("All");
-  const [selectedEvent, setSelectedEvent] = useState<DbEvent | null>(null);
+  
   const [statusFilter, setStatusFilter] = useState<EventStatus | "all">("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [currentPage, setCurrentPage] = useState(1);
@@ -92,7 +92,7 @@ const Index = () => {
 
       {/* Main content area */}
       <div className="lg:pl-56">
-        {liveEvent && <LiveBanner event={liveEvent} onSelect={setSelectedEvent} />}
+        {liveEvent && <LiveBanner event={liveEvent} onSelect={(e) => navigate(`/event/${e.id}`)} />}
 
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <HeroBanner />
@@ -201,7 +201,7 @@ const Index = () => {
                     >
                       <EventCardNew
                         event={event}
-                        onSelect={setSelectedEvent}
+                        onSelect={(e) => navigate(`/event/${e.id}`)}
                         view={viewMode}
                       />
                     </div>
@@ -260,7 +260,7 @@ const Index = () => {
         </footer>
       </div>
 
-      <EventDetailModal event={selectedEvent} onClose={() => setSelectedEvent(null)} />
+      
     </div>
   );
 };

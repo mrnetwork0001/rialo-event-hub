@@ -9,6 +9,7 @@ import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import SubmitEvent from "./pages/SubmitEvent";
 import NotFound from "./pages/NotFound";
+import EventDetail from "./pages/EventDetail";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/submit-event" element={<SubmitEvent />} />
+            <Route path="/event/:id" element={<EventDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
