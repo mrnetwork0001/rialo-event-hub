@@ -33,6 +33,7 @@ const Sidebar = () => {
   ];
 
   const externalLinks = [
+    { icon: Globe, label: "Rialo Discord", url: "https://discord.gg/rialoprotocol" },
     { icon: Globe, label: "Rialo Website", url: "https://rialo.io" },
   ];
 
