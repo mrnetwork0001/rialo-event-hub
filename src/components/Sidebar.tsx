@@ -28,7 +28,7 @@ const Sidebar = () => {
 
   const links = [
     { icon: Home, label: "Home", path: "/" },
-    { icon: Calendar, label: "Events", path: "/", active: true },
+    { icon: Calendar, label: "Calendar", path: "/calendar" },
     { icon: Trophy, label: "Leaderboard", path: "/leaderboard" },
     { icon: Lightbulb, label: "Suggestions", path: "/suggestions" },
     { icon: Send, label: "Submit Event", path: "/submit-event" },
