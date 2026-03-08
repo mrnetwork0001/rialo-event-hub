@@ -15,6 +15,7 @@ import {
   ExternalLink,
   Globe,
   Trophy,
+  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +32,9 @@ const Sidebar = () => {
     { icon: Trophy, label: "Leaderboard", path: "/leaderboard" },
     { icon: Lightbulb, label: "Suggestions", path: "/suggestions" },
     { icon: Send, label: "Submit Event", path: "/submit-event" },
+    ...(user
+      ? [{ icon: User, label: "My Profile", path: "/profile" }]
+      : []),
     ...(isAdmin
       ? [{ icon: Shield, label: "Admin", path: "/admin" }]
       : []),

@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import EventDetail from "./pages/EventDetail";
 import Leaderboard from "./pages/Leaderboard";
 import Suggestions from "./pages/Suggestions";
+import ProfilePage from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/event/:id" element={<EventDetail />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/suggestions" element={<Suggestions />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

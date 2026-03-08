@@ -125,19 +125,28 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           created_at: string
+          discord_username: string | null
           display_name: string
           id: string
+          wallet_address: string | null
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string
+          discord_username?: string | null
           display_name?: string
           id: string
+          wallet_address?: string | null
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string
+          discord_username?: string | null
           display_name?: string
           id?: string
+          wallet_address?: string | null
         }
         Relationships: []
       }
