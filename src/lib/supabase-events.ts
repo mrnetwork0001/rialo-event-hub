@@ -3,6 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 export type EventCategory = "AMA" | "Quiz & Games" | "X Space" | "Workshop" | "Meetup" | "Builders Showcase" | "Educational";
 export type EventStatus = "upcoming" | "live" | "past";
 
+export type RecurrenceType = "none" | "weekly" | "monthly";
+
 export interface DbEvent {
   id: string;
   title: string;
@@ -19,6 +21,8 @@ export interface DbEvent {
   image_url: string | null;
   is_pinned: boolean;
   rsvp_count: number;
+  recurrence_type: RecurrenceType;
+  recurrence_parent_id: string | null;
   created_at: string;
   updated_at: string;
 }
