@@ -15,6 +15,11 @@ import StatusBadge from "@/components/StatusBadge";
 import { supabase } from "@/integrations/supabase/client";
 
 const STATUSES: EventStatus[] = ["upcoming", "live", "past"];
+const RECURRENCE_TYPES: { value: RecurrenceType; label: string }[] = [
+  { value: "none", label: "No recurrence" },
+  { value: "weekly", label: "Weekly" },
+  { value: "monthly", label: "Monthly" },
+];
 
 /** Convert a UTC ISO string to a local "YYYY-MM-DDTHH:mm" value for datetime-local inputs */
 function toLocalDatetimeString(utcIso: string): string {
