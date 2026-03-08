@@ -13,6 +13,7 @@ import {
   Radio,
   ExternalLink,
   Globe,
+  Trophy,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
