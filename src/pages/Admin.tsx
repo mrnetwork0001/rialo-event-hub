@@ -538,8 +538,16 @@ const Admin = () => {
                   />
                   <Label htmlFor="is_pinned" className="cursor-pointer">Pin this event</Label>
                 </div>
-                <div className="space-y-2 sm:col-span-2">
-                  <Label>Recap Summary</Label>
+                <div className="space-y-2">
+                  <Label>Recurrence</Label>
+                  <select
+                    value={form.recurrence_type}
+                    onChange={(e) => setForm({ ...form, recurrence_type: e.target.value as RecurrenceType })}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  >
+                    {RECURRENCE_TYPES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+                  </select>
+                </div>
                   <Textarea value={form.recap_summary} onChange={(e) => setForm({ ...form, recap_summary: e.target.value })} />
                 </div>
                 <div className="sm:col-span-2 flex gap-3">
