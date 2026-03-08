@@ -179,6 +179,7 @@ const Admin = () => {
       image_url: event.image_url || "",
       is_pinned: event.is_pinned,
       rsvp_count: event.rsvp_count,
+      recurrence_type: (event as any).recurrence_type || "none",
     });
     setShowForm(true);
   };
