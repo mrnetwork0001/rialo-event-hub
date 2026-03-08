@@ -6,6 +6,7 @@ import {
   Calendar,
   Send,
   Shield,
+  Lightbulb,
   LogIn,
   LogOut,
   Menu,
@@ -28,6 +29,7 @@ const Sidebar = () => {
     { icon: Home, label: "Home", path: "/" },
     { icon: Calendar, label: "Events", path: "/", active: true },
     { icon: Trophy, label: "Leaderboard", path: "/leaderboard" },
+    { icon: Lightbulb, label: "Suggestions", path: "/suggestions" },
     { icon: Send, label: "Submit Event", path: "/submit-event" },
     ...(isAdmin
       ? [{ icon: Shield, label: "Admin", path: "/admin" }]
