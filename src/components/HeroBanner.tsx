@@ -6,10 +6,10 @@ const HeroBanner = () => {
       <div className="absolute -right-8 -bottom-8 h-40 w-40 rounded-full bg-white/5" />
 
       <div className="relative px-8 py-10">
-        <h1 className="font-display text-2xl font-bold text-white sm:text-3xl">
+        <h1 className="font-display text-2xl font-bold sm:text-3xl" style={{ color: '#e8e3d5' }}>
           Rialo Community Event Hub
         </h1>
-        <p className="mt-1 text-sm text-white/70">
+        <p className="mt-1 text-sm" style={{ color: 'rgba(232, 227, 213, 0.7)' }}>
           Your single source of truth for everything happening across the Rialo ecosystem.
         </p>
       </div>
