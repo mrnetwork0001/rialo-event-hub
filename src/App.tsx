@@ -13,6 +13,7 @@ import EventDetail from "./pages/EventDetail";
 import Leaderboard from "./pages/Leaderboard";
 import Suggestions from "./pages/Suggestions";
 import ProfilePage from "./pages/Profile";
+import CalendarView from "./pages/CalendarView";
 
 const queryClient = new QueryClient();
 
