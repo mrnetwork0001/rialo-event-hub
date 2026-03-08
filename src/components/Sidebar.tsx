@@ -13,6 +13,7 @@ import {
   Radio,
   ExternalLink,
   Globe,
+  Trophy,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +27,7 @@ const Sidebar = () => {
   const links = [
     { icon: Home, label: "Home", path: "/" },
     { icon: Calendar, label: "Events", path: "/", active: true },
+    { icon: Trophy, label: "Leaderboard", path: "/leaderboard" },
     { icon: Send, label: "Submit Event", path: "/submit-event" },
     ...(isAdmin
       ? [{ icon: Shield, label: "Admin", path: "/admin" }]
