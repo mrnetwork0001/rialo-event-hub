@@ -255,6 +255,7 @@ const Admin = () => {
         share_link: form.share_link || null,
         recap_summary: form.recap_summary || null,
         recording_link: form.recording_link || null,
+        recurrence_parent_id: null,
       };
 
       if (editingId) {
