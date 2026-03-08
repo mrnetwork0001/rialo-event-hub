@@ -10,6 +10,7 @@ import Admin from "./pages/Admin";
 import SubmitEvent from "./pages/SubmitEvent";
 import NotFound from "./pages/NotFound";
 import EventDetail from "./pages/EventDetail";
+import Leaderboard from "./pages/Leaderboard";
 
 const queryClient = new QueryClient();
 
