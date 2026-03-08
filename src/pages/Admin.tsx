@@ -43,6 +43,7 @@ const emptyForm = {
   image_url: "",
   is_pinned: false,
   rsvp_count: 0,
+  recurrence_type: "none" as RecurrenceType,
 };
 
 const Admin = () => {
