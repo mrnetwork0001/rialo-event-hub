@@ -6,6 +6,7 @@ import {
   Calendar,
   Send,
   Shield,
+  Lightbulb,
   LogIn,
   LogOut,
   Menu,
