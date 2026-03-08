@@ -39,20 +39,6 @@ const Sidebar = () => {
 
   const NavContent = () => (
     <div className="flex h-full flex-col">
-      {/* Logo */}
-      <div className="flex items-center gap-3 px-4 py-5 border-b border-border/50">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/15">
-          <Radio className="h-5 w-5 text-primary" />
-        </div>
-        {!collapsed && (
-          <div className="min-w-0">
-            <h1 className="font-display text-sm font-bold text-foreground truncate">
-              Rialo Community
-            </h1>
-            <p className="text-[10px] text-muted-foreground">Event Hub</p>
-          </div>
-        )}
-      </div>
 
       {/* Nav links */}
       <nav className="flex-1 space-y-1 px-2 py-4">
