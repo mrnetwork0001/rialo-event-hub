@@ -222,6 +222,7 @@ const Admin = () => {
       image_url: event.image_url || "",
       is_pinned: false,
       rsvp_count: 0,
+      recurrence_type: (event as any).recurrence_type || "none",
     });
     setImageFile(null);
     setImagePreview(null);
