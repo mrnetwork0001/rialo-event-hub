@@ -11,6 +11,7 @@ import SubmitEvent from "./pages/SubmitEvent";
 import NotFound from "./pages/NotFound";
 import EventDetail from "./pages/EventDetail";
 import Leaderboard from "./pages/Leaderboard";
+import Suggestions from "./pages/Suggestions";
 
 const queryClient = new QueryClient();
 
