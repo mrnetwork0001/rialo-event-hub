@@ -29,6 +29,8 @@ export type Database = {
           platform: string
           recap_summary: string | null
           recording_link: string | null
+          recurrence_parent_id: string | null
+          recurrence_type: string
           rsvp_count: number
           share_link: string | null
           status: Database["public"]["Enums"]["event_status"]
@@ -49,6 +51,8 @@ export type Database = {
           platform?: string
           recap_summary?: string | null
           recording_link?: string | null
+          recurrence_parent_id?: string | null
+          recurrence_type?: string
           rsvp_count?: number
           share_link?: string | null
           status?: Database["public"]["Enums"]["event_status"]
@@ -69,13 +73,23 @@ export type Database = {
           platform?: string
           recap_summary?: string | null
           recording_link?: string | null
+          recurrence_parent_id?: string | null
+          recurrence_type?: string
           rsvp_count?: number
           share_link?: string | null
           status?: Database["public"]["Enums"]["event_status"]
           title?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "events_recurrence_parent_id_fkey"
+            columns: ["recurrence_parent_id"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       reminders: {
         Row: {

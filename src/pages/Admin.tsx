@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { fetchEvents, createEvent, updateEvent, deleteEvent, fetchPendingEvents, getSiteSetting, updateSiteSetting, CATEGORIES, type DbEvent, type EventCategory, type EventStatus } from "@/lib/supabase-events";
+import { fetchEvents, createEvent, updateEvent, deleteEvent, fetchPendingEvents, getSiteSetting, updateSiteSetting, CATEGORIES, type DbEvent, type EventCategory, type EventStatus, type RecurrenceType } from "@/lib/supabase-events";
 import { uploadEventImage } from "@/lib/upload-image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,11 @@ import StatusBadge from "@/components/StatusBadge";
 import { supabase } from "@/integrations/supabase/client";
 
 const STATUSES: EventStatus[] = ["upcoming", "live", "past"];
+const RECURRENCE_TYPES: { value: RecurrenceType; label: string }[] = [
+  { value: "none", label: "No recurrence" },
+  { value: "weekly", label: "Weekly" },
+  { value: "monthly", label: "Monthly" },
+];
 
 /** Convert a UTC ISO string to a local "YYYY-MM-DDTHH:mm" value for datetime-local inputs */
 function toLocalDatetimeString(utcIso: string): string {
@@ -38,6 +43,7 @@ const emptyForm = {
   image_url: "",
   is_pinned: false,
   rsvp_count: 0,
+  recurrence_type: "none" as RecurrenceType,
 };
 
 const Admin = () => {
@@ -173,6 +179,7 @@ const Admin = () => {
       image_url: event.image_url || "",
       is_pinned: event.is_pinned,
       rsvp_count: event.rsvp_count,
+      recurrence_type: (event as any).recurrence_type || "none",
     });
     setShowForm(true);
   };
@@ -215,6 +222,7 @@ const Admin = () => {
       image_url: event.image_url || "",
       is_pinned: false,
       rsvp_count: 0,
+      recurrence_type: (event as any).recurrence_type || "none",
     });
     setImageFile(null);
     setImagePreview(null);
@@ -247,6 +255,7 @@ const Admin = () => {
         share_link: form.share_link || null,
         recap_summary: form.recap_summary || null,
         recording_link: form.recording_link || null,
+        recurrence_parent_id: null,
       };
 
       if (editingId) {
@@ -528,6 +537,16 @@ const Admin = () => {
                     className="h-4 w-4 rounded border-input accent-primary"
                   />
                   <Label htmlFor="is_pinned" className="cursor-pointer">Pin this event</Label>
+                </div>
+                <div className="space-y-2">
+                  <Label>Recurrence</Label>
+                  <select
+                    value={form.recurrence_type}
+                    onChange={(e) => setForm({ ...form, recurrence_type: e.target.value as RecurrenceType })}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  >
+                    {RECURRENCE_TYPES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+                  </select>
                 </div>
                 <div className="space-y-2 sm:col-span-2">
                   <Label>Recap Summary</Label>
