@@ -29,6 +29,7 @@ const App = () => (
             <Route path="/submit-event" element={<SubmitEvent />} />
             <Route path="/event/:id" element={<EventDetail />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/suggestions" element={<Suggestions />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
