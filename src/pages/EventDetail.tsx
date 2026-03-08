@@ -7,6 +7,7 @@ import CountdownTimer from "@/components/CountdownTimer";
 import StatusBadge from "@/components/StatusBadge";
 import { ArrowLeft, Calendar, MapPin, Users, ExternalLink, Play, Share2, Bell, CalendarPlus, Linkedin, Twitter, Mail } from "lucide-react";
 import RemindMeDialog from "@/components/RemindMeDialog";
+import EventComments from "@/components/EventComments";
 
 const categoryEmojis: Record<string, string> = {
   AMA: "🎤",
@@ -232,6 +233,9 @@ const EventDetail = () => {
                 </div>
               )}
             </div>
+
+            {/* Comments section */}
+            <EventComments eventId={event.id} />
 
             {/* Right - Sidebar info */}
             <div className="space-y-4">
