@@ -234,6 +234,9 @@ const EventDetail = () => {
               )}
             </div>
 
+            {/* Comments section */}
+            <EventComments eventId={event.id} />
+
             {/* Right - Sidebar info */}
             <div className="space-y-4">
               <div className="rounded-2xl border border-border bg-card p-6">
