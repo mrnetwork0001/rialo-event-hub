@@ -548,6 +548,8 @@ const Admin = () => {
                     {RECURRENCE_TYPES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
                   </select>
                 </div>
+                <div className="space-y-2 sm:col-span-2">
+                  <Label>Recap Summary</Label>
                   <Textarea value={form.recap_summary} onChange={(e) => setForm({ ...form, recap_summary: e.target.value })} />
                 </div>
                 <div className="sm:col-span-2 flex gap-3">
