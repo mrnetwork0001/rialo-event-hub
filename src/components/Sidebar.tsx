@@ -12,6 +12,7 @@ import {
   Menu,
   X,
   Radio,
+  Camera,
   ExternalLink,
   Globe,
   Trophy,
