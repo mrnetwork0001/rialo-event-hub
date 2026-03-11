@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -16,6 +16,8 @@ import {
   Globe,
   Trophy,
   User,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +27,15 @@ const Sidebar = () => {
   const { user, isAdmin, signOut } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    const stored = localStorage.getItem("theme");
+    return stored ? stored === "dark" : true;
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDark);
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  }, [isDark]);
 
   const links = [
     { icon: Home, label: "Home", path: "/" },
@@ -85,8 +96,15 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      {/* Auth */}
-      <div className="border-t border-border/50 px-2 py-4">
+      {/* Theme & Auth */}
+      <div className="border-t border-border/50 px-2 py-4 space-y-1">
+        <button
+          onClick={() => setIsDark((prev) => !prev)}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+        >
+          {isDark ? <Sun className="h-4.5 w-4.5 shrink-0" /> : <Moon className="h-4.5 w-4.5 shrink-0" />}
+          {!collapsed && <span>{isDark ? "Light Mode" : "Dark Mode"}</span>}
+        </button>
         {user ? (
           <button
             onClick={() => {
