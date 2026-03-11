@@ -27,6 +27,15 @@ const Sidebar = () => {
   const { user, isAdmin, signOut } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    const stored = localStorage.getItem("theme");
+    return stored ? stored === "dark" : true;
+  });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", isDark);
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  }, [isDark]);
 
   const links = [
     { icon: Home, label: "Home", path: "/" },
