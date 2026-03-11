@@ -14,6 +14,9 @@ import Leaderboard from "./pages/Leaderboard";
 import Suggestions from "./pages/Suggestions";
 import ProfilePage from "./pages/Profile";
 import CalendarView from "./pages/CalendarView";
+import Albums from "./pages/Albums";
+import AlbumDetail from "./pages/AlbumDetail";
+import SubmitAlbum from "./pages/SubmitAlbum";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +37,9 @@ const App = () => (
             <Route path="/suggestions" element={<Suggestions />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/calendar" element={<CalendarView />} />
+            <Route path="/albums" element={<Albums />} />
+            <Route path="/albums/:id" element={<AlbumDetail />} />
+            <Route path="/albums/submit" element={<SubmitAlbum />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

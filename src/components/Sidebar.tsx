@@ -40,6 +40,7 @@ const Sidebar = () => {
   const links = [
     { icon: Home, label: "Home", path: "/" },
     { icon: Calendar, label: "Calendar", path: "/calendar" },
+    { icon: Camera, label: "Albums", path: "/albums" },
     { icon: Trophy, label: "Leaderboard", path: "/leaderboard" },
     { icon: Lightbulb, label: "Suggestions", path: "/suggestions" },
     { icon: Send, label: "Submit Event", path: "/submit-event" },
