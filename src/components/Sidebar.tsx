@@ -96,8 +96,15 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      {/* Auth */}
-      <div className="border-t border-border/50 px-2 py-4">
+      {/* Theme & Auth */}
+      <div className="border-t border-border/50 px-2 py-4 space-y-1">
+        <button
+          onClick={() => setIsDark((prev) => !prev)}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
+        >
+          {isDark ? <Sun className="h-4.5 w-4.5 shrink-0" /> : <Moon className="h-4.5 w-4.5 shrink-0" />}
+          {!collapsed && <span>{isDark ? "Light Mode" : "Dark Mode"}</span>}
+        </button>
         {user ? (
           <button
             onClick={() => {
