@@ -192,7 +192,7 @@ function ActionButton({ event, onRemind }: { event: DbEvent; onRemind: () => voi
             onClick={(e) => e.stopPropagation()}
             className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
           >
-            Register
+            Join
           </a>
         ) : (
           <button
