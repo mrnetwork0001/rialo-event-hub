@@ -78,6 +78,7 @@ const PastTimeline = ({ events, onSelect }: PastTimelineProps) => {
                       {event.recording_link && (
                         <a
                           href={event.recording_link}
+                          target="_blank" rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
                           className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
                         >
