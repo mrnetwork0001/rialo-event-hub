@@ -95,6 +95,7 @@ const EventCard = ({ event, onSelect }: EventCardProps) => {
         {event.status === "past" && event.recording_link && (
           <a
             href={event.recording_link}
+            target="_blank" rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-secondary border border-border py-2.5 text-sm font-medium text-foreground hover:border-primary/30 transition-colors"
           >

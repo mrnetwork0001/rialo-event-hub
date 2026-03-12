@@ -228,6 +228,7 @@ const EventDetail = () => {
                   {event.recording_link && (
                     <a
                       href={event.recording_link}
+                      target="_blank" rel="noopener noreferrer"
                       className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
                     >
                       <Play className="h-4 w-4" /> Watch the full recording →
