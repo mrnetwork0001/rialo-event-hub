@@ -62,6 +62,7 @@ const FeaturedEvent = ({ event, onSelect }: FeaturedEventProps) => {
               {event.status === "live" && event.join_link && (
                 <a
                   href={event.join_link}
+                  target="_blank" rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
                   className="hidden sm:flex shrink-0 items-center gap-1.5 rounded-lg border border-live/40 bg-live/10 px-3 py-1.5 text-sm font-semibold text-live hover:bg-live/20 transition-colors"
                 >

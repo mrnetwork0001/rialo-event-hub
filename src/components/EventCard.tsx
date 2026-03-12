@@ -84,6 +84,7 @@ const EventCard = ({ event, onSelect }: EventCardProps) => {
         {event.status === "live" && event.join_link && (
           <a
             href={event.join_link}
+            target="_blank" rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-live/20 border border-live/40 py-2.5 text-sm font-semibold text-live hover:bg-live/30 transition-colors"
           >

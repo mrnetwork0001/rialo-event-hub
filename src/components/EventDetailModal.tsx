@@ -84,6 +84,7 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
           {event.status === "live" && event.join_link && (
             <a
               href={event.join_link}
+              target="_blank" rel="noopener noreferrer"
               className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-live text-live-foreground py-3 text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               <ExternalLink className="h-4 w-4" /> Join Live
@@ -92,6 +93,7 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
           {event.status === "upcoming" && event.join_link && (
             <a
               href={event.join_link}
+              target="_blank" rel="noopener noreferrer"
               className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground py-3 text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               <ExternalLink className="h-4 w-4" /> Join
