@@ -78,6 +78,7 @@ const PastTimeline = ({ events, onSelect }: PastTimelineProps) => {
                       {event.recording_link && (
                         <a
                           href={event.recording_link}
+                          target="_blank" rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
                           className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
                         >
@@ -196,6 +197,7 @@ function TimelineCard({
       {event.recording_link && (
         <a
           href={event.recording_link}
+          target="_blank" rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
           className={`mt-3 inline-flex items-center gap-1.5 rounded-lg bg-secondary border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/30 transition-colors`}
         >

@@ -110,6 +110,7 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
           {event.status === "past" && event.recording_link && (
             <a
               href={event.recording_link}
+              target="_blank" rel="noopener noreferrer"
               className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground py-3 text-sm font-semibold hover:opacity-90 transition-opacity"
             >
               <Play className="h-4 w-4" /> View Recap
