@@ -30,6 +30,7 @@ const LiveBanner = ({ event, onSelect }: LiveBannerProps) => {
         {event.join_link && (
           <a
             href={event.join_link}
+            target="_blank" rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             className="shrink-0 flex items-center gap-1.5 rounded-lg border border-destructive/40 bg-destructive/15 px-3 py-1.5 text-sm font-semibold text-destructive hover:bg-destructive/25 transition-colors"
           >

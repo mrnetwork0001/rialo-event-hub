@@ -190,6 +190,7 @@ function ActionButton({ event, onRemind }: { event: DbEvent; onRemind: () => voi
         {event.join_link ? (
           <a
             href={event.join_link}
+            target="_blank" rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
           >
