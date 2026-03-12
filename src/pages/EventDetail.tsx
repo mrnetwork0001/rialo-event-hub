@@ -160,6 +160,7 @@ const EventDetail = () => {
                   {event.status === "live" && event.join_link && (
                     <a
                       href={event.join_link}
+                      target="_blank" rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-6 py-3 text-sm font-semibold text-white hover:bg-red-700 transition-colors shadow-lg shadow-red-600/20"
                     >
                       <ExternalLink className="h-4 w-4" /> Join Live
