@@ -275,7 +275,7 @@ const EventDetail = () => {
                     href={event.join_link}
                     className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
                   >
-                    Register
+                    Join
                   </a>
                 )}
                 {event.status === "upcoming" && !event.join_link && (
