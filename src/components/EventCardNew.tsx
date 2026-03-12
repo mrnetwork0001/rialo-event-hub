@@ -176,6 +176,7 @@ function ActionButton({ event, onRemind }: { event: DbEvent; onRemind: () => voi
     return (
       <a
         href={event.join_link}
+        target="_blank" rel="noopener noreferrer"
         onClick={(e) => e.stopPropagation()}
         className="flex w-full items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition-colors"
       >
