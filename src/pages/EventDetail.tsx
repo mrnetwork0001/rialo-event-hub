@@ -178,6 +178,7 @@ const EventDetail = () => {
                   {event.status === "past" && event.recording_link && (
                     <a
                       href={event.recording_link}
+                      target="_blank" rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
                     >
                       <Play className="h-4 w-4" /> View Recording
