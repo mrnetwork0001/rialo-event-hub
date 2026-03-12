@@ -170,7 +170,7 @@ const EventDetail = () => {
                       href={event.join_link}
                       className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
                     >
-                      Register
+                      Join
                     </a>
                   )}
                   {event.status === "past" && event.recording_link && (
@@ -275,7 +275,7 @@ const EventDetail = () => {
                     href={event.join_link}
                     className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
                   >
-                    Register
+                    Join
                   </a>
                 )}
                 {event.status === "upcoming" && !event.join_link && (

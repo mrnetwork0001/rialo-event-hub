@@ -94,7 +94,7 @@ const EventDetailModal = ({ event, onClose }: EventDetailModalProps) => {
               href={event.join_link}
               className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-primary text-primary-foreground py-3 text-sm font-semibold hover:opacity-90 transition-opacity"
             >
-              <ExternalLink className="h-4 w-4" /> RSVP / Join
+              <ExternalLink className="h-4 w-4" /> Join
             </a>
           )}
           {event.status === "upcoming" && (
