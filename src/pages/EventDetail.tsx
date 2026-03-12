@@ -296,7 +296,7 @@ const EventDetail = () => {
                 )}
 
                 {/* Add to calendar */}
-                {event.status !== "past" && (
+                {event.status === "upcoming" && (
                   <a
                     href={generateCalendarUrl(event)}
                     target="_blank"
